@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Earl John Gomez — Full-Stack Web Developer</title>
+    <meta
+      name="description"
+      content="Portfolio of Earl John Gomez, full-stack web developer."
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="Earl John Gomez — Full-Stack Web Developer"
+    />
+    <meta
+      property="og:description"
+      content="Full-stack developer building responsive web apps, AI-integrated platforms, and backend systems."
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta
+      name="twitter:title"
+      content="Earl John Gomez — Full-Stack Web Developer"
+    />
+    <meta
+      name="twitter:description"
+      content="Full-stack developer building responsive web apps, AI-integrated platforms, and backend systems."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Archivo+Black&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230a0a0a'/%3E%3Cg stroke='%23f3f3f1' stroke-width='6' fill='none' stroke-linecap='round'%3E%3Cpath d='M50 30 L50 70 M50 40 L30 25 M50 40 L70 25 M50 55 L26 55 M50 55 L74 55 M50 65 L32 82 M50 65 L68 82'/%3E%3Ccircle cx='50' cy='34' r='9' fill='%23f3f3f1' stroke='none'/%3E%3C/g%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+ 
+  </head>
+  <body>
+    <canvas id="thread-canvas"></canvas>
+    <div class="grain"></div>
+
+    <nav id="nav">
+      <a href="#top" class="brand">
+        <svg viewBox="0 0 100 100" fill="none">
+          <g stroke="currentColor" stroke-width="6" stroke-linecap="round">
+            <path
+              d="M50 30 L50 70 M50 40 L30 25 M50 40 L70 25 M50 55 L26 55 M50 55 L74 55 M50 65 L32 82 M50 65 L68 82"
+            />
+            <circle cx="50" cy="34" r="9" fill="currentColor" stroke="none" />
+          </g>
+        </svg>
+        EARL&nbsp;JOHN&nbsp;GOMEZ
+      </a>
+      <ul class="nav-links">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#certs">Certs</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div style="display: flex; align-items: center; gap: 14px">
+        <a
+          href="D:\xampp\portfolio\cv.pdf"
+          download
+          class="nav-cta"
+          id="navResume"
+          >RESUME ↓</a
+        >
+        <a href="mailto:earljohngomez66@gmail.com" class="nav-cta"
+          >SAY HELLO →</a
+        >
+      </div>
+    </nav>
+
+    <header class="hero" id="top">
+      <div class="wrap hero-grid">
+        <div>
+          <p
+            class="eyebrow"
+            style="animation: fadeUp 0.8s var(--ease) forwards"
+          >
+            <span class="dot"></span> FULL-STACK DEVELOPER · Multi media editor · LAS PIÑAS, PH
+          </p>
+          <h1>
+            <span class="line"><span>EARL JOHN</span></span>
+            <span class="line"><span>GOMEZ</span></span>
+          </h1>
+          <p class="hero-sub">
+            Happy to work with your future projects.
+          </p>
+          <div class="hero-actions">
+            <a href="#work" class="btn primary">View Projects</a>
+            <a href="https://www.facebook.com/itsm3earljohn/" class="btn primary">Let's Connect</a>
+          </div>
+        </div>
+
+        <div class="hero-portrait">
+          <svg
+            class="web-frame"
+            viewBox="0 0 200 220"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path class="draw" d="M100 4 L100 216" />
+            <path class="draw" d="M4 60 L196 60" />
+            <path class="draw" d="M4 160 L196 160" />
+            <path class="draw" d="M22 22 Q100 60 178 22" />
+            <path class="draw" d="M22 198 Q100 160 178 198" />
+            <path class="draw" d="M14 40 Q100 110 14 180" />
+            <path class="draw" d="M186 40 Q100 110 186 180" />
+          </svg>
+          <div class="portrait-clip">
+            <img
+              src="D:\xampp\Portfolio\image\profile.png"
+              alt="Earl John Gomez"
+            />
+          </div>
+          <span class="portrait-tag">EST. 2022 — PRESENT</span>
+        </div>
+      </div>
+
+      <div class="scroll-cue"><span class="bar"></span> SCROLL</div>
+    </header>
+
+    <section class="pad hairline" id="about">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <div>
+            <span class="sec-num">01 — ABOUT</span>
+            <h2 class="sec-title">Profile</h2>
+          </div>
+          <p class="sec-desc">
+            A quick read on how I work and what I bring to a build.
+          </p>
+        </div>
+        <div class="about-grid">
+          <div data-reveal>
+            <p>
+              I’m a <strong>   web developer and multi media editor </strong>
+             who builds easy-to-use websites and digital tools that help businesses run smoother. 
+              Whether it’s creating a custom online booking system, an automated grading tool,
+              or a smooth checkout process, I bridge the gap between technical design and great user experience.
+              I bring a strong eye for design, a knack for solving complex problems, 
+              and a proven track record of delivering under pressure.
+            </p>
+
+            
+            <div class="stat-row">
+              <div class="stat">
+                <div class="num">4+</div>
+                <div class="lbl">Shipped Systems</div>
+              </div>
+              <div class="stat">
+                <div class="num">3</div>
+                <div class="lbl">Certifications</div>
+              </div>
+              <div class="stat">
+                <div class="num">15+</div>
+                <div class="lbl">Tools &amp; Stacks</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="skill-cols" data-reveal>
+            <div class="skill-cat">
+              <h4>Frontend</h4>
+              <div class="tag-list">
+                <span class="tag">HTML5</span><span class="tag">CSS3</span
+                ><span class="tag">JavaScript (ES6+)</span
+                ><span class="tag">TypeScript</span
+                ><span class="tag">React.js</span
+                ><span class="tag">Next.js</span
+                ><span class="tag">Tailwind CSS</span
+                ><span class="tag">Webpack</span>
+              </div>
+            </div>
+            <div class="skill-cat">
+              <h4>Backend &amp; DB</h4>
+              <div class="tag-list">
+                <span class="tag">PHP</span><span class="tag">Node.js</span
+                ><span class="tag">Express.js</span
+                ><span class="tag">NestJS</span><span class="tag">Laravel</span
+                ><span class="tag">Python</span><span class="tag">Java</span
+                ><span class="tag">FastAPI</span><span class="tag">MySQL</span>
+              </div>
+            </div>
+            <div class="skill-cat">
+              <h4>AI &amp; API</h4>
+              <div class="tag-list">
+                <span class="tag">REST APIs</span
+                ><span class="tag">OpenAI API</span
+                ><span class="tag">AI Chatbots</span
+                ><span class="tag">LangChain</span
+                ><span class="tag">TensorFlow</span
+                ><span class="tag">PyTorch</span>
+              </div>
+            </div> 
+            <div class="skill-cat">
+              <h4>Tools &amp; Design</h4>
+              <div class="tag-list">
+                <span class="tag">Git / GitHub</span
+                ><span class="tag">VS Code</span
+                ><span class="tag">WordPress</span
+                ><span class="tag">Webflow</span><span class="tag">Bubble</span
+                ><span class="tag">Figma-grade UI/UX</span
+                ><span class="tag">Photoshop</span>
+                <span class="tag">Capcut</span
+                ><span class="tag">Canva</span
+                ><span class="tag">Adobe Premiere</span
+                ><span class="tag">Adobe After Effects</span
+                ><span class="tag">Adobe Illustrator</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pad hairline" id="work">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <div>
+            <span class="sec-num">02 — SELECTED WORK</span>
+            <h2 class="sec-title">Projects</h2>
+          </div>
+          <p class="sec-desc">
+            Drag, scroll, or use the arrows — four systems built end to end.
+          </p>
+        </div>
+
+        <div class="carousel-shell" data-reveal>
+          <div class="carousel-track" id="projTrack">
+            <article class="proj-card">
+              <div class="proj-top">
+                <span class="proj-id">SYS / 01</span
+                ><span class="proj-role">Full-Stack Developer</span>
+              </div>
+              <img
+                class="proj-img"
+                src="D:\xampp\Portfolio\image\heritage.png"
+                alt="Heritage Park Taguig Management System"
+              />
+              <h3>Heritage Park Taguig Management System</h3>
+              <p class="proj-desc">
+                Architected a full-stack web app to streamline park operations
+                and record management, with a responsive interface built for
+                both desktop and mobile.
+              </p>
+              <ul class="proj-points">
+                <li>
+                  Designed a responsive frontend with Tailwind CSS for optimal
+                  cross-device viewing
+                </li>
+                <li>
+                  Implemented backend logic for database management and data
+                  retrieval
+                </li>
+                <li>Built secure user interaction flows across the platform</li>
+              </ul>
+              <div class="proj-stack">
+                <span>PHP</span><span>JavaScript</span><span>MySQL</span
+                ><span>Tailwind CSS</span>
+              </div>
+            </article>
+
+            <article class="proj-card">
+              <div class="proj-top">
+                <span class="proj-id">SYS / 02</span
+                ><span class="proj-role">Full-Stack Developer</span>
+              </div>
+              <img
+                class="proj-img"
+                src="D:\xampp\portfolio\image\stdom.png"
+                alt="Student Health Record & Admin Analytics System"
+              />
+              <h3>Student Health Record &amp; Admin Analytics System</h3>
+              <p class="proj-desc">
+                An interactive analytics dashboard for medical staff and
+                administrators, built around institutional color branding and
+                dynamic metrics.
+              </p>
+              <ul class="proj-points">
+                <li>
+                  Designed the dashboard interface with Tailwind CSS and
+                  JavaScript
+                </li>
+                <li>
+                  Configured PHP/MySQL backend routes to pull dynamic metrics
+                </li>
+                <li>
+                  Integrated role-based documentation and system security access
+                </li>
+              </ul>
+              <div class="proj-stack">
+                <span>PHP</span><span>MySQL</span><span>Tailwind CSS</span
+                ><span>JavaScript</span>
+              </div>
+            </article>
+
+            <article class="proj-card">
+              <div class="proj-top">
+                <span class="proj-id">SYS / 03</span
+                ><span class="proj-role">Full-Stack Developer</span>
+              </div>
+              <img
+                class="proj-img"
+                src="D:\xampp\portfolio\image\roma.png"
+                alt="Online Booking System — ROMA Tours Corp."
+              />
+              <h3> ROMA Online Booking (Online Bus Ticket Reservation System)</h3>
+              <p class="proj-desc">
+                A web-based bus booking platform for real-time availability,
+                schedules, and driver details, with an AI layer on top for
+                customer support.
+              </p>
+              <ul class="proj-points">
+                <li>
+                  Integrated an AI chatbot for real-time schedule, fare, and
+                  bus-type queries
+                </li>
+                <li>
+                  Built a sales analytics dashboard with dynamic charts and
+                  moving averages
+                </li>
+                <li>
+                  Automated printable receipts and email notifications for
+                  approved bookings
+                </li>
+              </ul>
+              <div class="proj-stack">
+                <span>PHP</span><span>MySQL</span><span>XAMPP</span
+                ><span>AI Chatbot</span>
+              </div>
+            </article>
+
+            <article class="proj-card">
+              <div class="proj-top">
+                <span class="proj-id">SYS / 04</span
+                ><span class="proj-role">Full-Stack Developer</span>
+              </div>
+
+              <h3>Online Grading Management System — AZGH College</h3>
+              <p class="proj-desc">
+                A grading system automating grade computation across Performance
+                Tasks, Written Works, and Examinations for an entire college.
+              </p>
+              <ul class="proj-points">
+                <li>
+                  Automated grade computation and email notifications to
+                  students
+                </li>
+                <li>
+                  Designed an accessible, user-friendly frontend interface
+                </li>
+                <li>
+                  Built with maintainability for non-technical administrators in
+                  mind
+                </li>
+              </ul>
+              <div class="proj-stack">
+                <span>PHP</span><span>XAMPP</span><span>HTML5</span
+                ><span>Tailwind CSS</span>
+              </div>
+            </article>
+          </div>
+          <div class="carousel-controls">
+            <div class="car-track-index">
+              <div class="track-bar"><em id="projFill"></em></div>
+              <span class="track-label"
+                >TRACKING <b id="projCount">01</b> / 04</span
+              >
+            </div>
+            <div class="car-arrows">
+              <button
+                class="car-arrow"
+                id="projPrev"
+                aria-label="Previous project"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
+              </button>
+              <button class="car-arrow" id="projNext" aria-label="Next project">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pad hairline" id="certs">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <div>
+            <span class="sec-num">03 — CREDENTIALS</span>
+            <h2 class="sec-title">Certifications</h2>
+          </div>
+          <p class="sec-desc">
+             Certifications, verified and linked.
+          </p>
+        </div>
+
+        <div class="carousel-shell" data-reveal>
+          <div class="carousel-track" id="certTrack">
+            <article class="cert-card">
+              <div class="cert-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4">
+                  <path
+                    d="M12 15l-5.5 3 1-6L3 8l6-.7L12 2l3 5.3L21 8l-4.5 4 1 6z"
+                  />
+                </svg>
+              </div>
+              <img
+                class="cert-img"
+                src="D:\xampp\Portfolio\image\python.png"
+                alt="Python Certification Badge"  
+              />
+                            <h4>Python</h4>
+              <a
+                class="cert-link"
+                href="https://freecodecamp.org/certification/fccaada7d45-00a6-4feb-a757-d51238c2ebea/python-v9"
+                target="_blank"
+                rel="noopener"
+                >View credential
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M7 17L17 7M7 7h10v10" /></svg
+              ></a>
+            </article>
+
+            <article class="cert-card">
+              <div class="cert-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4">
+                  <path
+                    d="M12 15l-5.5 3 1-6L3 8l6-.7L12 2l3 5.3L21 8l-4.5 4 1 6z"
+                  />
+                </svg>
+              </div>
+               <img
+                class="cert-img"
+                src="D:\xampp\Portfolio\image\rwd.png"
+                alt="Responsive Web Design Certification Badge"  
+              />
+              <h4>Responsive Web Design</h4>
+              <a
+                class="cert-link"
+                href="https://freecodecamp.org/certification/fccaada7d45-00a6-4feb-a757-d51238c2ebea/responsive-web-design-v9"
+                target="_blank"
+                rel="noopener"
+                >View credential
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M7 17L17 7M7 7h10v10" /></svg
+              ></a>
+            </article>
+
+            <article class="cert-card">
+              <div class="cert-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4">
+                  <path
+                    d="M12 15l-5.5 3 1-6L3 8l6-.7L12 2l3 5.3L21 8l-4.5 4 1 6z"
+                  />
+                </svg>
+              </div>
+                            <img
+                class="cert-img"
+                src="D:\xampp\Portfolio\image\java.png"
+                alt="JavaScript Certification Badge"  
+              />
+              <h4>JavaScript Algorithms &amp; Data Structures</h4>
+              <a
+                class="cert-link"
+                href="https://freecodecamp.org/certification/fccaada7d45-00a6-4feb-a757-d51238c2ebea/javascript-v9"
+                target="_blank"
+                rel="noopener"
+                >View credential
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M7 17L17 7M7 7h10v10" /></svg
+              ></a>
+            </article>
+          </div>
+          <div class="carousel-controls">
+            <div class="car-track-index">
+              <div class="track-bar"><em id="certFill"></em></div>
+              <span class="track-label"
+                >TRACKING <b id="certCount">01</b> / 03</span
+              >
+            </div>
+            <div class="car-arrows">
+              <button
+                class="car-arrow"
+                id="certPrev"
+                aria-label="Previous certificate"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
+              </button>
+              <button
+                class="car-arrow"
+                id="certNext"
+                aria-label="Next certificate"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+ <section class="pad hairline" id="experience">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <div>
+            <span class="sec-num">04 — BACKGROUND</span>
+            <h2 class="sec-title">Experience /Seminar </h2>
+          </div>
+        </div>
+        <div class="edu-grid" data-reveal>
+
+                    <div class="edu-card">
+            <span class="edu-year">2026 — 2026</span>
+            <h4>Web Development Engineer Intern</h4>
+            <p>St. Dominic College of Asia — ICT Department</p>
+            <p>As a full-stack web developer, you built and maintained responsive user interfaces using HTML5, Tailwind CSS, JavaScript, and PHP, while seamlessly integrating APIs, managing MySQL databases, authoring comprehensive technical documentation, and performing cross-viewport debugging to optimize system performance across devices.</p>
+          </div>
+
+                    <div class="edu-card">
+            <span class="edu-year">2024 - 2025</span>
+            <h4>Club Promoter & Host – Various Locations (Quezon City, Poblacion, Malate) </h4>
+            <p>Promoter / Host </p>
+            <p>
+Promoted nightlife events and hosted club nights. 
+Engaged with audiences and enhanced event turnout and customer experience. 
+Maintained active communication and promotions through social platforms. 
+</p>
+          </div>
+
+          <div class="edu-card">
+            <span class="edu-year">2022-2024</span>
+            <h4>Bimbo’s Coffee Shop, Las Piñas</h4>
+            <p>Barista / Graphic Designer </p>
+            <p>Started as a barista and was promoted to graphic designer. 
+Designed product promotional materials, posters, and edited videos for marketing. 
+Helped improve the brand’s visual identity and customer engagement
+</p>
+          </div>
+
+
+
+                    <div class="edu-card">
+            <span class="edu-year">October 2025</span>
+            <h4>GitHub Seminar </h4>
+            <p>Technical Support Staff </p>
+            <img
+              class="cert-img"
+              src="D:\xampp\Portfolio\image\github.jpg"
+              alt="GitHub Seminar Badge"
+            />
+          </div>
+
+                              <div class="edu-card">
+            <span class="edu-year">April 2025</span>
+            <h4>The BLOKC Seminar </h4>
+            <p>BLOCKCHAIN TECHNOLOGY </p>
+            <img
+              class="cert-img"
+              src="D:\xampp\Portfolio\image\block.jpg"
+              alt="The BLOKC Seminar Badge"
+            />
+          </div>
+
+                              <div class="edu-card">
+            <span class="edu-year">August 2024</span>
+            <h4>Daytona Seminar </h4>
+            <p>Developer Club Tour Philippines </p>
+            <img
+              class="cert-img"
+              src="D:\xampp\Portfolio\image\daytona.jpg"
+              alt="Daytona Seminar Badge"
+            />
+          </div>
+
+
+        </div>
+      </div>
+    </section>
+
+    <section class="pad hairline" id="education">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <div>
+            <span class="sec-num">05 — BACKGROUND</span>
+            <h2 class="sec-title">Education</h2>
+          </div>
+        </div>
+        <div class="edu-grid" data-reveal>
+          <div class="edu-card">
+            <span class="edu-year">2022 — 2026</span>
+            <h4>Dr. Filemon C. Aguilar Memorial College, Las Piñas</h4>
+            <p>Bachelor of Science in Information Systems (BSIS)</p>
+          </div>
+          <div class="edu-card">
+            <span class="edu-year">2020 — 2022</span>
+            <h4>Zarate College</h4>
+            <p>Senior High School Graduate</p>
+          </div>
+          <div class="edu-card">
+            <span class="edu-year">2016 — 2020</span>
+            <h4>Captain Albert Aguilar National High School</h4>
+            <p>High School Graduate</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hairline" id="contact">
+      <div class="wrap contact-inner">
+        <p class="eyebrow"><span class="dot"></span> 06 — CONTACT</p>
+        <h2 class="contact-title">
+          <a href="mailto:earljohngomez66@gmail.com"
+            >Let's build<br />something.</a
+          >
+        </h2>
+        <div class="contact-meta">
+          <a href="mailto:earljohngomez66@gmail.com"
+            id="emailLink"
+            data-email="earljohngomez66@gmail.com">earljohngomez66@gmail.com
+          </a>
+          <a href="tel:+639624238760"
+          id="phoneLink">0962 423 8760</a>
+          <a href="https://www.facebook.com/earljohngomez66"
+            id="facebooklink"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Facebook</a
+          >
+                    <a href="https://www.instagram.com/earljohngomez66"
+            id="Instagramlink"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Instagram</a
+          >
+          <span>Las Piñas City, Philippines</span>
+        </div>
+        <p
+          id="copyToast"
+          style="
+            margin-top: 16px;
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--fg-faint);
+            opacity: 0;
+            transition: opacity 0.3s;
+          "
+        >
+          Email copied to clipboard
+        </p>
+      </div>
+    </section>
+
+    <footer>
+      <div class="wrap foot-row">
+        <span class="brand">EARL JOHN GOMEZ © 2026</span>
+        <span>Happy to work with your future projects</span>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
