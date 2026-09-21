@@ -219,6 +219,9 @@
     const VALID_USER = "admin";
     const VALID_HASH = "7e1a7071b057c9266401fbbf1b1749ecf18211e2cb843e4f78b9d21476085e80";
 
+    // Clear old localStorage keys that might interfere
+    localStorage.removeItem("portfolio_digital_projects");
+
     async function hashPassword(pw) {
       const encoder = new TextEncoder();
       const data = encoder.encode(pw);

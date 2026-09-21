@@ -1,12 +1,18 @@
 "use strict";
 
+// Clear old stale localStorage keys
+localStorage.removeItem("portfolio_digital_projects");
+
 // ------------------------- localStorage helper -------------------------
 const ADMIN_KEY = "portfolio_admin_data";
 function getAdminData(section) {
   try {
     const s = localStorage.getItem(ADMIN_KEY);
-    if (s) { const d = JSON.parse(s); if (d[section]) return d[section]; }
-  } catch {}
+    if (s) {
+      const d = JSON.parse(s);
+      if (d && d[section]) return d[section];
+    }
+  } catch (e) { console.warn("Admin data parse error:", e); }
   return null;
 }
 
@@ -316,24 +322,26 @@ function renderProjects() {
   if (!track) return;
   const adminProjects = getAdminData("projects");
   const projects = adminProjects || DATA.projects;
+  if (!projects || !projects.length) return;
   projects.forEach((p) => {
+    if (!p) return;
     const card = el("article", "proj-card");
     const top = el("div", "proj-top");
-    top.append(el("span", "proj-id", p.id), el("span", "proj-role", p.role));
+    top.append(el("span", "proj-id", p.id || ""), el("span", "proj-role", p.role || ""));
     card.append(top);
     if (p.img) {
       const img = el("img", "proj-img");
       img.src = p.img;
-      img.alt = p.alt || p.title;
+      img.alt = p.alt || p.title || "";
       img.loading = "lazy";
       card.append(img);
     }
-    card.append(el("h3", null, p.title), el("p", "proj-desc", p.desc));
+    card.append(el("h3", null, p.title || ""), el("p", "proj-desc", p.desc || ""));
     const ul = el("ul", "proj-points");
-    p.points.forEach((pt) => ul.append(el("li", null, pt)));
+    (p.points || []).forEach((pt) => ul.append(el("li", null, pt)));
     card.append(ul);
     const stack = el("div", "proj-stack");
-    p.stack.forEach((s) => stack.append(el("span", null, s)));
+    (p.stack || []).forEach((s) => stack.append(el("span", null, s)));
     card.append(stack);
     track.append(card);
   });
@@ -344,26 +352,33 @@ function renderCerts() {
   if (!track) return;
   const adminCerts = getAdminData("certs");
   const certs = adminCerts || DATA.certs;
+  if (!certs || !certs.length) return;
   certs.forEach((c) => {
+    if (!c) return;
     const card = el("article", "cert-card");
     const icon = el("div", "cert-icon");
     icon.innerHTML =
       '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.4">' +
       '<path d="M12 15l-5.5 3 1-6L3 8l6-.7L12 2l3 5.3L21 8l-4.5 4 1 6z"/></svg>';
     card.append(icon);
-    const img = el("img", "cert-img");
-    img.src = c.img;
-    img.alt = c.name + " Certification Badge";
-    img.loading = "lazy";
-    card.append(img, el("h4", null, c.name));
-    const a = el("a", "cert-link", "View credential");
-    a.href = c.link;
-    a.target = "_blank";
-    a.rel = "noopener";
-    a.innerHTML +=
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
-      '<path d="M7 17L17 7M7 7h10v10"/></svg>';
-    card.append(a);
+    if (c.img) {
+      const img = el("img", "cert-img");
+      img.src = c.img;
+      img.alt = (c.name || "") + " Certification Badge";
+      img.loading = "lazy";
+      card.append(img);
+    }
+    card.append(el("h4", null, c.name || ""));
+    if (c.link) {
+      const a = el("a", "cert-link", "View credential");
+      a.href = c.link;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.innerHTML +=
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+        '<path d="M7 17L17 7M7 7h10v10"/></svg>';
+      card.append(a);
+    }
     track.append(card);
   });
 }
@@ -373,18 +388,20 @@ function renderExperience() {
   if (!track) return;
   const adminExp = getAdminData("experience");
   const experience = adminExp || DATA.experience;
+  if (!experience || !experience.length) return;
   experience.forEach((e) => {
+    if (!e) return;
     const card = el("article", "cert-card");
     if (e.img) {
       const img = el("img", "cert-img");
       img.src = e.img;
-      img.alt = e.title + " Badge";
+      img.alt = (e.title || "") + " Badge";
       img.loading = "lazy";
       card.append(img);
     }
-    card.append(el("h4", null, e.title));
-    card.append(el("span", "exp-period", e.period));
-    card.append(el("span", "exp-org", e.org));
+    card.append(el("h4", null, e.title || ""));
+    if (e.period) card.append(el("span", "exp-period", e.period));
+    if (e.org) card.append(el("span", "exp-org", e.org));
     if (e.desc) card.append(el("p", null, e.desc));
     track.append(card);
   });
@@ -395,22 +412,24 @@ function renderDigitalProjects() {
   if (!grid) return;
   const adminDig = getAdminData("digital");
   const items = adminDig || DATA.digitalProjects;
+  if (!items || !items.length) return;
   items.forEach((d) => {
+    if (!d) return;
     const card = el("article", "dig-card");
     if (d.img) {
       const imgWrap = el("div", "dig-img-wrap");
       const img = el("img", "dig-img");
       img.src = d.img;
-      img.alt = d.title + " Preview";
+      img.alt = (d.title || "") + " Preview";
       img.loading = "lazy";
       img.addEventListener("click", () => openLightbox(d.img, d.title));
       imgWrap.append(img);
       card.append(imgWrap);
     }
     const info = el("div", "dig-info");
-    info.append(el("h4", null, d.title));
-    info.append(el("span", "dig-period", d.period));
-    info.append(el("span", "dig-org", d.org));
+    info.append(el("h4", null, d.title || ""));
+    if (d.period) info.append(el("span", "dig-period", d.period));
+    if (d.org) info.append(el("span", "dig-org", d.org));
     if (d.desc) info.append(el("p", "dig-desc", d.desc));
     card.append(info);
     grid.append(card);
