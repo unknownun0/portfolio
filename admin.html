@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin — Digital Projects</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0a0a0a;
+        --bg-soft: #131313;
+        --panel: #161616;
+        --line: rgba(243, 243, 241, 0.12);
+        --line-strong: rgba(243, 243, 241, 0.28);
+        --fg: #f3f3f1;
+        --fg-dim: #9a9a97;
+        --fg-faint: #5c5c59;
+        --accent: #ff2d3d;
+        --head: "Space Grotesk", sans-serif;
+        --body: "Inter", sans-serif;
+        --ease: cubic-bezier(0.16, 0.84, 0.44, 1);
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        background: var(--bg);
+        color: var(--fg);
+        font-family: var(--body);
+        font-weight: 300;
+        line-height: 1.55;
+        min-height: 100vh;
+      }
+      a { color: inherit; text-decoration: none; }
+
+      /* Header */
+      .admin-header {
+        padding: 24px clamp(24px, 5vw, 64px);
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        background: rgba(10, 10, 10, 0.95);
+        backdrop-filter: blur(10px);
+        z-index: 100;
+      }
+      .admin-header h1 {
+        font-family: var(--head);
+        font-size: 20px;
+        font-weight: 600;
+      }
+      .admin-header h1 span { color: var(--accent); }
+      .header-actions { display: flex; gap: 12px; }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-family: var(--head);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        border: 1px solid var(--line);
+        background: transparent;
+        color: var(--fg);
+        transition: 0.2s;
+      }
+      .btn:hover { border-color: var(--fg); background: rgba(255,255,255,0.04); }
+      .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+      .btn.primary:hover { background: #e62635; }
+      .btn.danger { border-color: var(--accent); color: var(--accent); }
+      .btn.danger:hover { background: rgba(255,45,61,0.1); }
+
+      /* Stats bar */
+      .stats-bar {
+        padding: 16px clamp(24px, 5vw, 64px);
+        display: flex;
+        gap: 24px;
+        border-bottom: 1px solid var(--line);
+        font-size: 13px;
+        color: var(--fg-dim);
+      }
+      .stats-bar strong { color: var(--fg); font-weight: 600; }
+
+      /* Grid */
+      .admin-grid {
+        padding: 32px clamp(24px, 5vw, 64px);
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 20px;
+      }
+
+      /* Card */
+      .admin-card {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        overflow: hidden;
+        transition: 0.3s var(--ease);
+        background: var(--panel);
+      }
+      .admin-card:hover { border-color: var(--line-strong); }
+      .admin-card.editing { border-color: var(--accent); }
+      .card-img-wrap {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 4/3;
+        overflow: hidden;
+        background: var(--bg);
+        cursor: pointer;
+      }
+      .card-img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s;
+      }
+      .card-img-wrap:hover img { transform: scale(1.03); }
+      .card-img-wrap .img-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: 0.3s;
+        font-size: 13px;
+        color: var(--fg);
+      }
+      .card-img-wrap:hover .img-overlay { opacity: 1; }
+      .card-body { padding: 18px; }
+      .card-num {
+        font-size: 11px;
+        color: var(--fg-faint);
+        margin-bottom: 6px;
+        font-family: monospace;
+      }
+      .card-title {
+        font-family: var(--head);
+        font-weight: 600;
+        font-size: 15px;
+        margin-bottom: 6px;
+        line-height: 1.35;
+      }
+      .card-desc {
+        font-size: 13px;
+        color: var(--fg-dim);
+        line-height: 1.5;
+        margin-bottom: 14px;
+      }
+      .card-actions { display: flex; gap: 8px; }
+      .card-actions .btn { padding: 7px 14px; font-size: 12px; }
+
+      /* Edit Form Modal */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.8);
+        z-index: 200;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: 0.3s;
+        padding: 20px;
+      }
+      .modal-overlay.open { opacity: 1; visibility: visible; }
+      .modal {
+        background: var(--bg-soft);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        width: 100%;
+        max-width: 520px;
+        max-height: 90vh;
+        overflow-y: auto;
+        transform: translateY(20px);
+        transition: 0.4s var(--ease);
+      }
+      .modal-overlay.open .modal { transform: translateY(0); }
+      .modal-header {
+        padding: 24px 24px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .modal-header h2 {
+        font-family: var(--head);
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .modal-close {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid var(--line);
+        background: none;
+        color: var(--fg-dim);
+        font-size: 18px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.2s;
+      }
+      .modal-close:hover { border-color: var(--fg); color: var(--fg); }
+      .modal-body { padding: 24px; }
+      .form-group { margin-bottom: 18px; }
+      .form-group label {
+        display: block;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--fg-dim);
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .form-group input,
+      .form-group textarea {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: var(--body);
+        font-size: 14px;
+        transition: 0.2s;
+        outline: none;
+      }
+      .form-group input:focus,
+      .form-group textarea:focus { border-color: var(--accent); }
+      .form-group textarea { resize: vertical; min-height: 80px; }
+      .form-group .img-preview {
+        width: 100%;
+        aspect-ratio: 4/3;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-top: 10px;
+        background: var(--bg);
+      }
+      .form-group .img-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .form-group .file-input-wrap {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .form-group input[type="file"] { display: none; }
+      .modal-footer {
+        padding: 0 24px 24px;
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+      }
+
+      /* Toast */
+      .toast {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: var(--accent);
+        color: #fff;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        z-index: 300;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: 0.3s;
+      }
+      .toast.show { opacity: 1; transform: translateY(0); }
+
+      @media (max-width: 600px) {
+        .admin-grid { grid-template-columns: 1fr; }
+        .header-actions { flex-wrap: wrap; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="admin-header">
+      <h1><span>Admin</span> — Digital Projects</h1>
+      <div class="header-actions">
+        <a href="index.html" class="btn">← Back to Site</a>
+        <button class="btn" id="resetBtn">Reset All</button>
+        <button class="btn primary" id="saveAllBtn">Save All Changes</button>
+      </div>
+    </header>
+
+    <div class="stats-bar">
+      <span>Total: <strong id="totalCount">0</strong> items</span>
+      <span>Modified: <strong id="modifiedCount">0</strong> items</span>
+      <span>Storage: <strong id="storageSize">0 KB</strong></span>
+    </div>
+
+    <div class="admin-grid" id="adminGrid"></div>
+
+    <!-- Edit Modal -->
+    <div class="modal-overlay" id="editModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>Edit Design</h2>
+          <button class="modal-close" id="modalClose">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Title</label>
+            <input type="text" id="editTitle" placeholder="Design title" />
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea id="editDesc" placeholder="Short description"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <input type="text" id="editOrg" placeholder="e.g. Menu Design · Photoshop" />
+          </div>
+          <div class="form-group">
+            <label>Image</label>
+            <div class="file-input-wrap">
+              <label class="btn" for="editImageInput">Choose New Image</label>
+              <input type="file" id="editImageInput" accept="image/*" />
+              <span id="editImageName" style="font-size:12px;color:var(--fg-faint);"></span>
+            </div>
+            <div class="img-preview" id="editImgPreview"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" id="modalCancel">Cancel</button>
+          <button class="btn primary" id="modalSave">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+      "use strict";
+
+      // Default data from script.js
+      const DEFAULT_DATA = [
+        { title: "NEFICO NFC Pubmat Posting", org: "Digital Design", desc: "Pubmat posting design for NEFICO NFC brand promotion.", img: "image/digi-02-grand-opening.png" },
+        { title: "Logo Local Brand Creation", org: "Brand Design", desc: "Custom logo creation for a local brand identity.", img: "image/digi-18-makiling-hoodie.png" },
+        { title: "Local Clothing Brand Tshirt Merch Design", org: "Merch Design", desc: "Tshirt merchandise design for a local clothing brand.", img: "image/digi-20-makiling-footer.png" },
+        { title: "SABL Pubmat Menu", org: "Menu Design", desc: "Pubmat menu design for SABL brand.", img: "image/digi-01-coffee-menu.png" },
+        { title: "SABL Logo Creation", org: "Brand Design", desc: "Custom logo creation for SABL brand.", img: "image/digi-22-business-card.png" },
+        { title: "G Ka Brew — Matcha Pubmat", org: "Promo Poster · Photoshop", desc: "Matcha pubmat post with promo pricing.", img: "image/digi-08-frappe-promo.png" },
+        { title: "G Ka Brew — Soda Juice Menu", org: "Menu Design · Photoshop", desc: "Colorful soda juice lineup with pricing, logo, and location details.", img: "image/digi-09-soda-juice.png" },
+        { title: "G Ka Brew — Drinks Promo", org: "Promo Poster · Photoshop", desc: "Iced coffee lineup with torn-paper effect and layered design.", img: "image/digi-10-vanilla-latte-torn.png" },
+        { title: "Club Group Schedule Pubmat Poster", org: "Event Poster", desc: "Schedule pubmat poster for club group events.", img: "image/digi-13-afterdark-venom.png" },
+        { title: "Club Brand Pubmat", org: "Brand Design", desc: "Brand pubmat design for club identity.", img: "image/digi-15-back-to-school.png" },
+        { title: "Frappe Factory — Best Seller Menu (4 Flavors)", org: "Menu Design · Photoshop", desc: "Compact best seller layout featuring Mango Graham, Avocado Graham, Caramel Macchiato, and Kasoy Avocado.", img: "image/digi-12-best-seller-4.png" },
+        { title: "Afterdark Co. — We Are Venom Event", org: "Event Poster · Photoshop", desc: "Dark event flyer with green snake motif, artist lineup, and phone mockup presentation.", img: "image/digi-13-afterdark-venom.png" },
+        { title: "Frappe Factory — Vanilla Biscoff Coffee", org: "Product Poster · Photoshop", desc: "Featured product spotlight with Biscoff jar pairing and splatter background.", img: "image/digi-14-vanilla-biscoff.png" },
+        { title: "G Ka Brew — Back to School Promo", org: "Event Poster · Photoshop", desc: "Fun illustrated promo poster with school-themed graphics and discount offer.", img: "image/digi-15-back-to-school.png" },
+        { title: "G Ka Brew — Product Menu Drinks Lineup", org: "Menu Design · Photoshop", desc: "Full product menu with drinks lineup featuring coffee and non-coffee options.", img: "image/digi-01-coffee-menu.png" },
+        { title: "Frappe Factory — Open for Franchise", org: "Business Poster · Photoshop", desc: "Franchise opportunity poster with business package details and product lineup.", img: "image/digi-16-open-franchise.png" },
+        { title: "Frappe Factory — Shawarma Rice & Wrap", org: "Menu Poster · Photoshop", desc: "Food menu poster featuring shawarma rice bowl and wrap with pricing.", img: "image/digi-17-shawarma.png" },
+        { title: "Makiling Corp — Hero Section Design", org: "Web Design · UI/UX", desc: "Brand hero section with lifestyle photography, logo overlay, and green-toned aesthetic.", img: "image/digi-19-makiling-hero.png" },
+        { title: "Makiling Corp — Footer & Jersey Mockup", org: "Web Design · UI/UX", desc: "Contact section with jersey product mockup and social media integration.", img: "image/digi-20-makiling-footer.png" },
+        { title: "Frappe Factory — Loyalty Card", org: "Brand Design · Photoshop", desc: "Punch-card loyalty design with 10-drink reward system and product strip.", img: "image/digi-21-loyalty-card.png" },
+        { title: "Frappe Factory — Business Card", org: "Brand Design · Photoshop", desc: "Professional business card with geometric background, contact info, and product collage.", img: "image/digi-22-business-card.png" },
+      ];
+
+      const STORAGE_KEY = "portfolio_digital_projects";
+      let currentData = [];
+      let editingIndex = -1;
+
+      // Load from localStorage or defaults
+      function loadData() {
+        try {
+          const saved = localStorage.getItem(STORAGE_KEY);
+          if (saved) {
+            currentData = JSON.parse(saved);
+            // Ensure all default fields exist
+            DEFAULT_DATA.forEach((def, i) => {
+              if (!currentData[i]) currentData[i] = { ...def };
+            });
+          } else {
+            currentData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+          }
+        } catch {
+          currentData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+        }
+      }
+
+      function saveData() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(currentData));
+        updateStats();
+        showToast("Changes saved!");
+      }
+
+      function resetData() {
+        if (!confirm("Reset all changes to defaults? This cannot be undone.")) return;
+        localStorage.removeItem(STORAGE_KEY);
+        currentData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+        renderGrid();
+        updateStats();
+        showToast("All changes reset to defaults");
+      }
+
+      function updateStats() {
+        document.getElementById("totalCount").textContent = currentData.length;
+        let modified = 0;
+        currentData.forEach((item, i) => {
+          if (JSON.stringify(item) !== JSON.stringify(DEFAULT_DATA[i])) modified++;
+        });
+        document.getElementById("modifiedCount").textContent = modified;
+        const bytes = new Blob([localStorage.getItem(STORAGE_KEY) || ""]).size;
+        document.getElementById("storageSize").textContent =
+          bytes > 1024 ? (bytes / 1024).toFixed(1) + " MB" : bytes + " KB";
+      }
+
+      function showToast(msg) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.classList.add("show");
+        setTimeout(() => t.classList.remove("show"), 2000);
+      }
+
+      // Render grid
+      function renderGrid() {
+        const grid = document.getElementById("adminGrid");
+        grid.innerHTML = "";
+        currentData.forEach((item, i) => {
+          const card = document.createElement("div");
+          card.className = "admin-card";
+          card.innerHTML = `
+            <div class="card-img-wrap" data-index="${i}">
+              <img src="${item.img}" alt="${item.title}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 300%22><rect fill=%22%23161616%22 width=%22400%22 height=%22300%22/><text x=%2250%25%22 y=%2250%25%22 fill=%22%235c5c59%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2214%22>No Image</text></svg>'" />
+              <div class="img-overlay">Click to edit image</div>
+            </div>
+            <div class="card-body">
+              <div class="card-num">#${String(i + 1).padStart(2, "0")}</div>
+              <div class="card-title">${item.title}</div>
+              <div class="card-desc">${item.desc}</div>
+              <div class="card-actions">
+                <button class="btn" onclick="editItem(${i})">✏️ Edit</button>
+                <button class="btn danger" onclick="deleteItem(${i})">🗑️ Delete</button>
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+        updateStats();
+      }
+
+      // Edit item
+      function editItem(index) {
+        editingIndex = index;
+        const item = currentData[index];
+        document.getElementById("editTitle").value = item.title;
+        document.getElementById("editDesc").value = item.desc;
+        document.getElementById("editOrg").value = item.org || "";
+        document.getElementById("editImageName").textContent = "";
+        const preview = document.getElementById("editImgPreview");
+        preview.innerHTML = `<img src="${item.img}" alt="" />`;
+        document.getElementById("editImageInput").value = "";
+        document.getElementById("editModal").classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeModal() {
+        document.getElementById("editModal").classList.remove("open");
+        document.body.style.overflow = "";
+        editingIndex = -1;
+      }
+
+      function saveEdit() {
+        if (editingIndex < 0) return;
+        currentData[editingIndex].title = document.getElementById("editTitle").value;
+        currentData[editingIndex].desc = document.getElementById("editDesc").value;
+        currentData[editingIndex].org = document.getElementById("editOrg").value;
+
+        // Check if new image was selected
+        const fileInput = document.getElementById("editImageInput");
+        if (fileInput.files && fileInput.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            currentData[editingIndex].img = e.target.result;
+            renderGrid();
+            saveData();
+          };
+          reader.readAsDataURL(fileInput.files[0]);
+        } else {
+          renderGrid();
+          saveData();
+        }
+        closeModal();
+      }
+
+      // Delete item
+      function deleteItem(index) {
+        if (!confirm(`Delete "${currentData[index].title}"?`)) return;
+        currentData.splice(index, 1);
+        renderGrid();
+        saveData();
+        showToast("Item deleted");
+      }
+
+      // Image preview on file select
+      document.getElementById("editImageInput").addEventListener("change", function () {
+        if (this.files && this.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            document.getElementById("editImgPreview").innerHTML =
+              `<img src="${e.target.result}" alt="" />`;
+          };
+          reader.readAsDataURL(this.files[0]);
+          document.getElementById("editImageName").textContent = this.files[0].name;
+        }
+      });
+
+      // Event listeners
+      document.getElementById("modalClose").addEventListener("click", closeModal);
+      document.getElementById("modalCancel").addEventListener("click", closeModal);
+      document.getElementById("modalSave").addEventListener("click", saveEdit);
+      document.getElementById("saveAllBtn").addEventListener("click", saveData);
+      document.getElementById("resetBtn").addEventListener("click", resetData);
+      document.getElementById("editModal").addEventListener("click", function (e) {
+        if (e.target === this) closeModal();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeModal();
+      });
+
+      // Init
+      loadData();
+      renderGrid();
+    </script>
+  </body>
+</html>

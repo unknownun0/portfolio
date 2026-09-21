@@ -133,147 +133,126 @@ const DATA = {
   digitalProjects: [
     {
       title: "NEFICO NFC Pubmat Posting",
-      period: "2024",
       org: "Digital Design",
       desc: "Pubmat posting design for NEFICO NFC brand promotion.",
       img: "image/digi-02-grand-opening.png",
     },
     {
       title: "Logo Local Brand Creation",
-      period: "2024",
       org: "Brand Design",
       desc: "Custom logo creation for a local brand identity.",
       img: "image/digi-18-makiling-hoodie.png",
     },
     {
       title: "Local Clothing Brand Tshirt Merch Design",
-      period: "2024",
       org: "Merch Design",
       desc: "Tshirt merchandise design for a local clothing brand.",
       img: "image/digi-20-makiling-footer.png",
     },
     {
       title: "SABL Pubmat Menu",
-      period: "2024",
       org: "Menu Design",
       desc: "Pubmat menu design for SABL brand.",
       img: "image/digi-01-coffee-menu.png",
     },
     {
       title: "SABL Logo Creation",
-      period: "2024",
       org: "Brand Design",
       desc: "Custom logo creation for SABL brand.",
       img: "image/digi-22-business-card.png",
     },
     {
       title: "G Ka Brew — Matcha Pubmat",
-      period: "2024",
       org: "Promo Poster · Photoshop",
       desc: "Matcha pubmat post with promo pricing.",
       img: "image/digi-08-frappe-promo.png",
     },
     {
       title: "G Ka Brew — Soda Juice Menu",
-      period: "2024",
       org: "Menu Design · Photoshop",
       desc: "Colorful soda juice lineup with pricing, logo, and location details.",
       img: "image/digi-09-soda-juice.png",
     },
     {
       title: "G Ka Brew — Drinks Promo",
-      period: "2024",
       org: "Promo Poster · Photoshop",
       desc: "Iced coffee lineup with torn-paper effect and layered design.",
       img: "image/digi-10-vanilla-latte-torn.png",
     },
     {
       title: "Club Group Schedule Pubmat Poster",
-      period: "2024",
       org: "Event Poster",
       desc: "Schedule pubmat poster for club group events.",
       img: "image/digi-13-afterdark-venom.png",
     },
     {
       title: "Club Brand Pubmat",
-      period: "2024",
       org: "Brand Design",
       desc: "Brand pubmat design for club identity.",
       img: "image/digi-15-back-to-school.png",
     },
     {
       title: "Frappe Factory — Best Seller Menu (4 Flavors)",
-      period: "2024",
       org: "Menu Design · Photoshop",
       desc: "Compact best seller layout featuring Mango Graham, Avocado Graham, Caramel Macchiato, and Kasoy Avocado.",
       img: "image/digi-12-best-seller-4.png",
     },
     {
       title: "Afterdark Co. — We Are Venom Event",
-      period: "2025",
       org: "Event Poster · Photoshop",
       desc: "Dark event flyer with green snake motif, artist lineup, and phone mockup presentation.",
       img: "image/digi-13-afterdark-venom.png",
     },
     {
       title: "Frappe Factory — Vanilla Biscoff Coffee",
-      period: "2024",
       org: "Product Poster · Photoshop",
       desc: "Featured product spotlight with Biscoff jar pairing and splatter background.",
       img: "image/digi-14-vanilla-biscoff.png",
     },
     {
       title: "G Ka Brew — Back to School Promo",
-      period: "2024",
       org: "Event Poster · Photoshop",
       desc: "Fun illustrated promo poster with school-themed graphics and discount offer.",
       img: "image/digi-15-back-to-school.png",
     },
     {
       title: "G Ka Brew — Product Menu Drinks Lineup",
-      period: "2024",
       org: "Menu Design · Photoshop",
       desc: "Full product menu with drinks lineup featuring coffee and non-coffee options.",
       img: "image/digi-01-coffee-menu.png",
     },
     {
       title: "Frappe Factory — Open for Franchise",
-      period: "2024",
       org: "Business Poster · Photoshop",
       desc: "Franchise opportunity poster with business package details and product lineup.",
       img: "image/digi-16-open-franchise.png",
     },
     {
       title: "Frappe Factory — Shawarma Rice & Wrap",
-      period: "2024",
       org: "Menu Poster · Photoshop",
       desc: "Food menu poster featuring shawarma rice bowl and wrap with pricing.",
       img: "image/digi-17-shawarma.png",
     },
     {
       title: "Makiling Corp — Hero Section Design",
-      period: "2025",
       org: "Web Design · UI/UX",
       desc: "Brand hero section with lifestyle photography, logo overlay, and green-toned aesthetic.",
       img: "image/digi-19-makiling-hero.png",
     },
     {
       title: "Makiling Corp — Footer & Jersey Mockup",
-      period: "2025",
       org: "Web Design · UI/UX",
       desc: "Contact section with jersey product mockup and social media integration.",
       img: "image/digi-20-makiling-footer.png",
     },
     {
       title: "Frappe Factory — Loyalty Card",
-      period: "2024",
       org: "Brand Design · Photoshop",
       desc: "Punch-card loyalty design with 10-drink reward system and product strip.",
       img: "image/digi-21-loyalty-card.png",
     },
     {
       title: "Frappe Factory — Business Card",
-      period: "2024",
       org: "Brand Design · Photoshop",
       desc: "Professional business card with geometric background, contact info, and product collage.",
       img: "image/digi-22-business-card.png",
@@ -398,7 +377,13 @@ function renderExperience() {
 function renderDigitalProjects() {
   const grid = document.getElementById("digGrid");
   if (!grid) return;
-  DATA.digitalProjects.forEach((d) => {
+  // Load admin data from localStorage if available
+  let items = DATA.digitalProjects;
+  try {
+    const saved = localStorage.getItem("portfolio_digital_projects");
+    if (saved) items = JSON.parse(saved);
+  } catch {}
+  items.forEach((d) => {
     const card = el("article", "dig-card");
     if (d.img) {
       const imgWrap = el("div", "dig-img-wrap");
