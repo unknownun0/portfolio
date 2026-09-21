@@ -319,10 +319,12 @@ const reduceMotion = window.matchMedia(
 // ------------------------- dynamic renderers -------------------------
 function renderProjects() {
   const track = document.getElementById("projTrack");
-  if (!track) return;
+  if (!track) { console.error("projTrack not found!"); return; }
+  console.log("renderProjects called, track children:", track.children.length);
   const adminProjects = getAdminData("projects");
   const projects = adminProjects || DATA.projects;
-  if (!projects || !projects.length) return;
+  console.log("projects data source:", adminProjects ? "ADMIN" : "DEFAULTS", "count:", projects?.length);
+  if (!projects || !projects.length) { console.warn("No projects data!"); return; }
   projects.forEach((p) => {
     if (!p) return;
     const card = el("article", "proj-card");
@@ -933,6 +935,21 @@ document.addEventListener("DOMContentLoaded", () => {
   renderEducation();
   initCountUp();
   initTypewriter();
+
+  // Debug: log render results
+  console.log("Admin data check:", {
+    projects: getAdminData("projects") ? "HAS DATA" : "null (using defaults)",
+    certs: getAdminData("certs") ? "HAS DATA" : "null (using defaults)",
+    digital: getAdminData("digital") ? "HAS DATA" : "null (using defaults)",
+    experience: getAdminData("experience") ? "HAS DATA" : "null (using defaults)",
+  });
+  console.log("Track elements:", {
+    projTrack: document.getElementById("projTrack")?.children.length || 0,
+    certTrack: document.getElementById("certTrack")?.children.length || 0,
+    expTrack: document.getElementById("expTrack")?.children.length || 0,
+    digGrid: document.getElementById("digGrid")?.children.length || 0,
+    eduGrid: document.getElementById("eduGrid")?.children.length || 0,
+  });
   initCarousel(
     "projTrack",
     "projPrev",
