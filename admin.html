@@ -66,7 +66,53 @@
       /* Toast */
       .toast{position:fixed;bottom:24px;right:24px;background:var(--accent);color:#fff;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:500;z-index:300;opacity:0;transform:translateY(10px);transition:.3s}
       .toast.show{opacity:1;transform:translateY(0)}
-      @media(max-width:600px){.form-row{grid-template-columns:1fr}.tabs{gap:2px}.tab{padding:7px 12px;font-size:12px}}
+      /* ---- responsive ---- */
+      @media(max-width:768px){
+        .admin-header{padding:14px 16px}
+        .admin-header h1{font-size:15px}
+        .header-actions{width:100%}
+        .header-actions .btn{flex:1;justify-content:center}
+        .tabs{padding:10px 16px}
+        .tab{padding:7px 14px;font-size:12px}
+        .content{padding:20px 16px}
+        .section h2{font-size:18px}
+        .item-card .item-header{gap:10px}
+        .item-card .item-title{font-size:13px}
+      }
+      @media(max-width:600px){
+        .form-row{grid-template-columns:1fr}
+        .tabs{gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+        .tabs::-webkit-scrollbar{display:none}
+        .tab{padding:6px 10px;font-size:11px}
+        .admin-header{flex-wrap:wrap}
+        .header-actions{flex-wrap:wrap}
+        .header-actions .btn{flex:1 1 45%;font-size:11px;padding:7px 10px}
+        .content{padding:16px 12px}
+        .section h2{font-size:16px}
+        .section .sub{font-size:12px}
+        .form-group input,.form-group textarea,.form-group select{font-size:13px;padding:10px 12px}
+        .item-card{padding:14px;border-radius:10px;margin-bottom:12px}
+        .item-card .item-num{font-size:10px;min-width:22px}
+        .item-card .item-title{font-size:12px}
+        .item-card .item-header{flex-wrap:wrap}
+        .item-actions{flex-direction:column}
+        .item-actions .btn{width:100%;justify-content:center}
+        .img-preview{width:80px;height:60px}
+        .img-preview.big{width:100%}
+        .toast{left:16px;right:16px;bottom:16px;text-align:center;font-size:12px}
+        .login-box{padding:28px 20px;max-width:320px}
+        .login-box h2{font-size:18px}
+        .login-box .lock-icon{width:50px;height:50px;font-size:22px}
+      }
+      @media(max-width:380px){
+        .admin-header h1{font-size:13px}
+        .tab{padding:5px 8px;font-size:10px}
+        .content{padding:12px 10px}
+        .form-group label{font-size:11px}
+        .btn{padding:7px 12px;font-size:11px}
+        .btn.sm{padding:5px 8px;font-size:10px}
+        .login-box{padding:20px 16px;max-width:280px}
+      }
 
       /* Login Screen */
       .login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
