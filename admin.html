@@ -440,11 +440,11 @@
       renderHero();
       renderAbout();
       renderSections();
-      renderProjects();
-      renderCerts();
-      renderExperience();
-      renderDigital();
-      renderEducation();
+      renderListSection("projects", "projectsList", projectFields);
+      renderListSection("certs", "certsList", certFields);
+      renderListSection("experience", "experienceList", expFields);
+      renderListSection("digital", "digitalList", digFields);
+      renderListSection("education", "educationList", eduFields);
       renderContact();
     }
 
