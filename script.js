@@ -284,24 +284,54 @@ function renderExperience() {
 }
 
 function renderDigitalProjects() {
-  const track = document.getElementById("digTrack");
-  if (!track) return;
+  const grid = document.getElementById("digGrid");
+  if (!grid) return;
   DATA.digitalProjects.forEach((d) => {
-    const card = el("article", "cert-card");
+    const card = el("article", "dig-card");
     if (d.img) {
-      const img = el("img", "cert-img");
+      const imgWrap = el("div", "dig-img-wrap");
+      const img = el("img", "dig-img");
       img.src = d.img;
       img.alt = d.title + " Preview";
       img.loading = "lazy";
-      card.append(img);
+      img.addEventListener("click", () => openLightbox(d.img, d.title));
+      imgWrap.append(img);
+      card.append(imgWrap);
     }
-    card.append(el("h4", null, d.title));
-    card.append(el("span", "exp-period", d.period));
-    card.append(el("span", "exp-org", d.org));
-    if (d.desc) card.append(el("p", null, d.desc));
-    track.append(card);
+    const info = el("div", "dig-info");
+    info.append(el("h4", null, d.title));
+    info.append(el("span", "dig-period", d.period));
+    info.append(el("span", "dig-org", d.org));
+    if (d.desc) info.append(el("p", "dig-desc", d.desc));
+    card.append(info);
+    grid.append(card);
   });
 }
+
+// ------------------------- lightbox -------------------------
+function openLightbox(src, alt) {
+  const lb = document.getElementById("lightbox");
+  const img = document.getElementById("lightboxImg");
+  if (!lb || !img) return;
+  img.src = src;
+  img.alt = alt || "";
+  lb.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeLightbox() {
+  const lb = document.getElementById("lightbox");
+  if (!lb) return;
+  lb.classList.remove("open");
+  document.body.style.overflow = "";
+}
+document.addEventListener("click", (e) => {
+  if (e.target.id === "lightboxClose" || e.target.id === "lightbox") {
+    closeLightbox();
+  }
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeLightbox();
+});
 
 function renderEducation() {
   const grid = document.getElementById("eduGrid");
@@ -683,13 +713,5 @@ document.addEventListener("DOMContentLoaded", () => {
     "expFill",
     "expCount",
     DATA.experience.length,
-  );
-  initCarousel(
-    "digTrack",
-    "digPrev",
-    "digNext",
-    "digFill",
-    "digCount",
-    DATA.digitalProjects.length,
   );
 });

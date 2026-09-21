@@ -1074,6 +1074,122 @@ section.pad {
   margin-top: 5px;
 }
 
+/* ---------- digital projects grid ---------- */
+.dig-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+.dig-card {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: 0.3s var(--ease);
+  cursor: default;
+}
+.dig-card:hover {
+  border-color: var(--line-strong);
+  background: rgba(255, 255, 255, 0.02);
+}
+.dig-img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  background: var(--panel);
+}
+.dig-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s var(--ease);
+  cursor: zoom-in;
+}
+.dig-img:hover {
+  transform: scale(1.05);
+}
+.dig-info {
+  padding: 20px;
+}
+.dig-info h4 {
+  font-family: var(--head);
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 6px;
+  line-height: 1.35;
+}
+.dig-period {
+  display: block;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--fg-faint);
+  margin-bottom: 2px;
+}
+.dig-org {
+  display: block;
+  font-family: var(--head);
+  font-size: 12px;
+  color: var(--fg-dim);
+  margin-bottom: 8px;
+}
+.dig-desc {
+  color: var(--fg-dim);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* ---------- lightbox ---------- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s var(--ease), visibility 0.3s;
+  cursor: zoom-out;
+  padding: 40px;
+}
+.lightbox.open {
+  opacity: 1;
+  visibility: visible;
+}
+.lightbox-img {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  transform: scale(0.9);
+  transition: transform 0.4s var(--ease);
+}
+.lightbox.open .lightbox-img {
+  transform: scale(1);
+}
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  font-size: 32px;
+  color: var(--fg-dim);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  transition: 0.3s;
+  z-index: 210;
+}
+.lightbox-close:hover {
+  color: var(--fg);
+  border-color: var(--fg);
+}
+
 /* ---------- contact ---------- */
 .contact-inner {
   text-align: center;

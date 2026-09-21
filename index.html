@@ -433,53 +433,18 @@
             <h2 class="sec-title">Digital Projects</h2>
           </div>
           <p class="sec-desc">
-             Video edits, graphic design, and content creation.
+             Brand design, menu layouts, and promotional materials.
           </p>
         </div>
-
-        <div class="carousel-shell" data-reveal>
-          <div class="carousel-track" id="digTrack"></div>
-          <div class="carousel-controls">
-            <div class="car-track-index">
-              <div class="track-bar"><em id="digFill"></em></div>
-              <span class="track-label"
-                >TRACKING <b id="digCount">01</b> / 05</span
-              >
-            </div>
-            <div class="car-arrows">
-              <button
-                class="car-arrow"
-                id="digPrev"
-                aria-label="Previous digital project"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path d="M15 18l-6-6 6-6" />
-                </svg>
-              </button>
-              <button
-                class="car-arrow"
-                id="digNext"
-                aria-label="Next digital project"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path d="M9 18l6-6-6-6" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
+        <div class="dig-grid" id="digGrid" data-reveal></div>
       </div>
     </section>
+
+    <!-- Image Lightbox -->
+    <div class="lightbox" id="lightbox">
+      <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+      <img class="lightbox-img" id="lightboxImg" alt="" />
+    </div>
 
     <section class="pad hairline" id="education">
       <div class="wrap">
