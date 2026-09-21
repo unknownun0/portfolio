@@ -3,540 +3,567 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin — Digital Projects</title>
+    <title>Admin — Portfolio Manager</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <style>
-      :root {
-        --bg: #0a0a0a;
-        --bg-soft: #131313;
-        --panel: #161616;
-        --line: rgba(243, 243, 241, 0.12);
-        --line-strong: rgba(243, 243, 241, 0.28);
-        --fg: #f3f3f1;
-        --fg-dim: #9a9a97;
-        --fg-faint: #5c5c59;
-        --accent: #ff2d3d;
-        --head: "Space Grotesk", sans-serif;
-        --body: "Inter", sans-serif;
-        --ease: cubic-bezier(0.16, 0.84, 0.44, 1);
-      }
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body {
-        background: var(--bg);
-        color: var(--fg);
-        font-family: var(--body);
-        font-weight: 300;
-        line-height: 1.55;
-        min-height: 100vh;
-      }
-      a { color: inherit; text-decoration: none; }
-
+      :root{--bg:#0a0a0a;--bg-soft:#131313;--panel:#161616;--line:rgba(243,243,241,.12);--line-strong:rgba(243,243,241,.28);--fg:#f3f3f1;--fg-dim:#9a9a97;--fg-faint:#5c5c59;--accent:#ff2d3d;--head:"Space Grotesk",sans-serif;--body:"Inter",sans-serif;--ease:cubic-bezier(.16,.84,.44,1)}
+      *{margin:0;padding:0;box-sizing:border-box}
+      body{background:var(--bg);color:var(--fg);font-family:var(--body);font-weight:300;line-height:1.55;min-height:100vh}
+      a{color:inherit;text-decoration:none}
       /* Header */
-      .admin-header {
-        padding: 24px clamp(24px, 5vw, 64px);
-        border-bottom: 1px solid var(--line);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        position: sticky;
-        top: 0;
-        background: rgba(10, 10, 10, 0.95);
-        backdrop-filter: blur(10px);
-        z-index: 100;
-      }
-      .admin-header h1 {
-        font-family: var(--head);
-        font-size: 20px;
-        font-weight: 600;
-      }
-      .admin-header h1 span { color: var(--accent); }
-      .header-actions { display: flex; gap: 12px; }
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 10px 20px;
-        border-radius: 8px;
-        font-family: var(--head);
-        font-size: 13px;
-        font-weight: 500;
-        cursor: pointer;
-        border: 1px solid var(--line);
-        background: transparent;
-        color: var(--fg);
-        transition: 0.2s;
-      }
-      .btn:hover { border-color: var(--fg); background: rgba(255,255,255,0.04); }
-      .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-      .btn.primary:hover { background: #e62635; }
-      .btn.danger { border-color: var(--accent); color: var(--accent); }
-      .btn.danger:hover { background: rgba(255,45,61,0.1); }
-
-      /* Stats bar */
-      .stats-bar {
-        padding: 16px clamp(24px, 5vw, 64px);
-        display: flex;
-        gap: 24px;
-        border-bottom: 1px solid var(--line);
-        font-size: 13px;
-        color: var(--fg-dim);
-      }
-      .stats-bar strong { color: var(--fg); font-weight: 600; }
-
-      /* Grid */
-      .admin-grid {
-        padding: 32px clamp(24px, 5vw, 64px);
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-        gap: 20px;
-      }
-
-      /* Card */
-      .admin-card {
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        overflow: hidden;
-        transition: 0.3s var(--ease);
-        background: var(--panel);
-      }
-      .admin-card:hover { border-color: var(--line-strong); }
-      .admin-card.editing { border-color: var(--accent); }
-      .card-img-wrap {
-        position: relative;
-        width: 100%;
-        aspect-ratio: 4/3;
-        overflow: hidden;
-        background: var(--bg);
-        cursor: pointer;
-      }
-      .card-img-wrap img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.3s;
-      }
-      .card-img-wrap:hover img { transform: scale(1.03); }
-      .card-img-wrap .img-overlay {
-        position: absolute;
-        inset: 0;
-        background: rgba(0,0,0,0.6);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        transition: 0.3s;
-        font-size: 13px;
-        color: var(--fg);
-      }
-      .card-img-wrap:hover .img-overlay { opacity: 1; }
-      .card-body { padding: 18px; }
-      .card-num {
-        font-size: 11px;
-        color: var(--fg-faint);
-        margin-bottom: 6px;
-        font-family: monospace;
-      }
-      .card-title {
-        font-family: var(--head);
-        font-weight: 600;
-        font-size: 15px;
-        margin-bottom: 6px;
-        line-height: 1.35;
-      }
-      .card-desc {
-        font-size: 13px;
-        color: var(--fg-dim);
-        line-height: 1.5;
-        margin-bottom: 14px;
-      }
-      .card-actions { display: flex; gap: 8px; }
-      .card-actions .btn { padding: 7px 14px; font-size: 12px; }
-
-      /* Edit Form Modal */
-      .modal-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.8);
-        z-index: 200;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        visibility: hidden;
-        transition: 0.3s;
-        padding: 20px;
-      }
-      .modal-overlay.open { opacity: 1; visibility: visible; }
-      .modal {
-        background: var(--bg-soft);
-        border: 1px solid var(--line);
-        border-radius: 16px;
-        width: 100%;
-        max-width: 520px;
-        max-height: 90vh;
-        overflow-y: auto;
-        transform: translateY(20px);
-        transition: 0.4s var(--ease);
-      }
-      .modal-overlay.open .modal { transform: translateY(0); }
-      .modal-header {
-        padding: 24px 24px 0;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      .modal-header h2 {
-        font-family: var(--head);
-        font-size: 18px;
-        font-weight: 600;
-      }
-      .modal-close {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        border: 1px solid var(--line);
-        background: none;
-        color: var(--fg-dim);
-        font-size: 18px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: 0.2s;
-      }
-      .modal-close:hover { border-color: var(--fg); color: var(--fg); }
-      .modal-body { padding: 24px; }
-      .form-group { margin-bottom: 18px; }
-      .form-group label {
-        display: block;
-        font-size: 12px;
-        font-weight: 500;
-        color: var(--fg-dim);
-        margin-bottom: 6px;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
-      .form-group input,
-      .form-group textarea {
-        width: 100%;
-        padding: 12px 14px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: var(--bg);
-        color: var(--fg);
-        font-family: var(--body);
-        font-size: 14px;
-        transition: 0.2s;
-        outline: none;
-      }
-      .form-group input:focus,
-      .form-group textarea:focus { border-color: var(--accent); }
-      .form-group textarea { resize: vertical; min-height: 80px; }
-      .form-group .img-preview {
-        width: 100%;
-        aspect-ratio: 4/3;
-        border-radius: 8px;
-        overflow: hidden;
-        margin-top: 10px;
-        background: var(--bg);
-      }
-      .form-group .img-preview img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-      .form-group .file-input-wrap {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-      }
-      .form-group input[type="file"] { display: none; }
-      .modal-footer {
-        padding: 0 24px 24px;
-        display: flex;
-        gap: 12px;
-        justify-content: flex-end;
-      }
-
+      .admin-header{padding:20px clamp(20px,4vw,48px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(10,10,10,.95);backdrop-filter:blur(10px);z-index:100;gap:16px;flex-wrap:wrap}
+      .admin-header h1{font-family:var(--head);font-size:18px;font-weight:600;white-space:nowrap}
+      .admin-header h1 span{color:var(--accent)}
+      .header-actions{display:flex;gap:10px;flex-wrap:wrap}
+      /* Tabs */
+      .tabs{display:flex;gap:4px;padding:12px clamp(20px,4vw,48px);border-bottom:1px solid var(--line);overflow-x:auto;-webkit-overflow-scrolling:touch}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab{padding:8px 18px;border-radius:8px;font-family:var(--head);font-size:13px;font-weight:500;cursor:pointer;border:1px solid transparent;background:transparent;color:var(--fg-dim);white-space:nowrap;transition:.2s}
+      .tab:hover{color:var(--fg);border-color:var(--line)}
+      .tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+      /* Content */
+      .content{padding:32px clamp(20px,4vw,48px);max-width:900px}
+      .section{display:none}
+      .section.active{display:block}
+      .section h2{font-family:var(--head);font-size:22px;font-weight:600;margin-bottom:6px}
+      .section .sub{color:var(--fg-dim);font-size:13px;margin-bottom:28px}
+      /* Buttons */
+      .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:8px;font-family:var(--head);font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--fg);transition:.2s;white-space:nowrap}
+      .btn:hover{border-color:var(--fg);background:rgba(255,255,255,.04)}
+      .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+      .btn.primary:hover{background:#e62635}
+      .btn.sm{padding:6px 12px;font-size:12px}
+      .btn.danger{border-color:var(--accent);color:var(--accent)}
+      .btn.danger:hover{background:rgba(255,45,61,.1)}
+      /* Form */
+      .form-group{margin-bottom:18px}
+      .form-group label{display:block;font-size:12px;font-weight:500;color:var(--fg-dim);margin-bottom:5px;text-transform:uppercase;letter-spacing:.05em}
+      .form-group input,.form-group textarea,.form-group select{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:14px;transition:.2s;outline:none}
+      .form-group input:focus,.form-group textarea:focus{border-color:var(--accent)}
+      .form-group textarea{resize:vertical;min-height:70px}
+      .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+      /* Image preview */
+      .img-preview{width:120px;height:90px;border-radius:8px;overflow:hidden;background:var(--panel);flex-shrink:0;border:1px solid var(--line)}
+      .img-preview img{width:100%;height:100%;object-fit:cover}
+      .img-preview.big{width:100%;aspect-ratio:4/3;height:auto}
+      /* Item card */
+      .item-card{border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:16px;transition:.2s}
+      .item-card:hover{border-color:var(--line-strong)}
+      .item-card .item-header{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+      .item-card .item-num{font-size:11px;color:var(--fg-faint);font-family:monospace;min-width:28px}
+      .item-card .item-title{font-family:var(--head);font-weight:600;font-size:15px;flex:1}
+      .item-card .item-body{display:none}
+      .item-card.open .item-body{display:block}
+      .item-card .item-fields{display:flex;flex-direction:column;gap:14px}
+      .item-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+      /* Tag input */
+      .tag-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+      .tag{background:var(--panel);border:1px solid var(--line);padding:4px 10px;border-radius:6px;font-size:12px;display:flex;align-items:center;gap:6px}
+      .tag .tag-remove{cursor:pointer;color:var(--fg-faint);font-size:14px;line-height:1}
+      .tag .tag-remove:hover{color:var(--accent)}
       /* Toast */
-      .toast {
-        position: fixed;
-        bottom: 24px;
-        right: 24px;
-        background: var(--accent);
-        color: #fff;
-        padding: 12px 20px;
-        border-radius: 8px;
-        font-size: 13px;
-        font-weight: 500;
-        z-index: 300;
-        opacity: 0;
-        transform: translateY(10px);
-        transition: 0.3s;
-      }
-      .toast.show { opacity: 1; transform: translateY(0); }
-
-      @media (max-width: 600px) {
-        .admin-grid { grid-template-columns: 1fr; }
-        .header-actions { flex-wrap: wrap; }
-      }
+      .toast{position:fixed;bottom:24px;right:24px;background:var(--accent);color:#fff;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:500;z-index:300;opacity:0;transform:translateY(10px);transition:.3s}
+      .toast.show{opacity:1;transform:translateY(0)}
+      @media(max-width:600px){.form-row{grid-template-columns:1fr}.tabs{gap:2px}.tab{padding:7px 12px;font-size:12px}}
     </style>
   </head>
   <body>
     <header class="admin-header">
-      <h1><span>Admin</span> — Digital Projects</h1>
+      <h1><span>Admin</span> — Portfolio Manager</h1>
       <div class="header-actions">
         <a href="index.html" class="btn">← Back to Site</a>
-        <button class="btn" id="resetBtn">Reset All</button>
-        <button class="btn primary" id="saveAllBtn">Save All Changes</button>
+        <button class="btn danger" id="resetAllBtn">Reset All</button>
+        <button class="btn primary" id="saveAllBtn">💾 Save All</button>
       </div>
     </header>
 
-    <div class="stats-bar">
-      <span>Total: <strong id="totalCount">0</strong> items</span>
-      <span>Modified: <strong id="modifiedCount">0</strong> items</span>
-      <span>Storage: <strong id="storageSize">0 KB</strong></span>
-    </div>
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-tab="hero">Hero</button>
+      <button class="tab" data-tab="about">About</button>
+      <button class="tab" data-tab="projects">Projects</button>
+      <button class="tab" data-tab="certs">Certs</button>
+      <button class="tab" data-tab="experience">Experience</button>
+      <button class="tab" data-tab="digital">Digital</button>
+      <button class="tab" data-tab="education">Education</button>
+      <button class="tab" data-tab="contact">Contact</button>
+    </nav>
 
-    <div class="admin-grid" id="adminGrid"></div>
+    <div class="content">
+      <!-- HERO -->
+      <div class="section active" id="sec-hero">
+        <h2>Hero Section</h2>
+        <p class="sub">Name, title, typing roles, and profile image.</p>
+        <div id="heroFields"></div>
+      </div>
 
-    <!-- Edit Modal -->
-    <div class="modal-overlay" id="editModal">
-      <div class="modal">
-        <div class="modal-header">
-          <h2>Edit Design</h2>
-          <button class="modal-close" id="modalClose">✕</button>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label>Title</label>
-            <input type="text" id="editTitle" placeholder="Design title" />
-          </div>
-          <div class="form-group">
-            <label>Description</label>
-            <textarea id="editDesc" placeholder="Short description"></textarea>
-          </div>
-          <div class="form-group">
-            <label>Category</label>
-            <input type="text" id="editOrg" placeholder="e.g. Menu Design · Photoshop" />
-          </div>
-          <div class="form-group">
-            <label>Image</label>
-            <div class="file-input-wrap">
-              <label class="btn" for="editImageInput">Choose New Image</label>
-              <input type="file" id="editImageInput" accept="image/*" />
-              <span id="editImageName" style="font-size:12px;color:var(--fg-faint);"></span>
-            </div>
-            <div class="img-preview" id="editImgPreview"></div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn" id="modalCancel">Cancel</button>
-          <button class="btn primary" id="modalSave">Save Changes</button>
-        </div>
+      <!-- ABOUT -->
+      <div class="section" id="sec-about">
+        <h2>About Section</h2>
+        <p class="sub">Bio, stats, and skill tags.</p>
+        <div id="aboutFields"></div>
+        <h3 style="margin:24px 0 12px;font-size:15px;">Skills</h3>
+        <div id="skillsFields"></div>
+      </div>
+
+      <!-- PROJECTS -->
+      <div class="section" id="sec-projects">
+        <h2>Projects</h2>
+        <p class="sub">Work items shown in the carousel.</p>
+        <div id="projectsList"></div>
+        <button class="btn" style="margin-top:12px" onclick="addItem('projects')">+ Add Project</button>
+      </div>
+
+      <!-- CERTS -->
+      <div class="section" id="sec-certs">
+        <h2>Certifications</h2>
+        <p class="sub">Cert badges and credential links.</p>
+        <div id="certsList"></div>
+        <button class="btn" style="margin-top:12px" onclick="addItem('certs')">+ Add Certification</button>
+      </div>
+
+      <!-- EXPERIENCE -->
+      <div class="section" id="sec-experience">
+        <h2>Experience & Seminars</h2>
+        <p class="sub">Work history and event participation.</p>
+        <div id="experienceList"></div>
+        <button class="btn" style="margin-top:12px" onclick="addItem('experience')">+ Add Experience</button>
+      </div>
+
+      <!-- DIGITAL -->
+      <div class="section" id="sec-digital">
+        <h2>Digital Projects</h2>
+        <p class="sub">Design work shown in the grid.</p>
+        <div id="digitalList"></div>
+        <button class="btn" style="margin-top:12px" onclick="addItem('digital')">+ Add Digital Project</button>
+      </div>
+
+      <!-- EDUCATION -->
+      <div class="section" id="sec-education">
+        <h2>Education</h2>
+        <p class="sub">School history.</p>
+        <div id="educationList"></div>
+        <button class="btn" style="margin-top:12px" onclick="addItem('education')">+ Add Education</button>
+      </div>
+
+      <!-- CONTACT -->
+      <div class="section" id="sec-contact">
+        <h2>Contact</h2>
+        <p class="sub">Email, phone, and social links.</p>
+        <div id="contactFields"></div>
       </div>
     </div>
 
     <div class="toast" id="toast"></div>
 
     <script>
-      "use strict";
+    "use strict";
 
-      // Default data from script.js
-      const DEFAULT_DATA = [
-        { title: "NEFICO NFC Pubmat Posting", org: "Digital Design", desc: "Pubmat posting design for NEFICO NFC brand promotion.", img: "image/digi-02-grand-opening.png" },
-        { title: "Logo Local Brand Creation", org: "Brand Design", desc: "Custom logo creation for a local brand identity.", img: "image/digi-18-makiling-hoodie.png" },
-        { title: "Local Clothing Brand Tshirt Merch Design", org: "Merch Design", desc: "Tshirt merchandise design for a local clothing brand.", img: "image/digi-20-makiling-footer.png" },
-        { title: "SABL Pubmat Menu", org: "Menu Design", desc: "Pubmat menu design for SABL brand.", img: "image/digi-01-coffee-menu.png" },
-        { title: "SABL Logo Creation", org: "Brand Design", desc: "Custom logo creation for SABL brand.", img: "image/digi-22-business-card.png" },
-        { title: "G Ka Brew — Matcha Pubmat", org: "Promo Poster · Photoshop", desc: "Matcha pubmat post with promo pricing.", img: "image/digi-08-frappe-promo.png" },
-        { title: "G Ka Brew — Soda Juice Menu", org: "Menu Design · Photoshop", desc: "Colorful soda juice lineup with pricing, logo, and location details.", img: "image/digi-09-soda-juice.png" },
-        { title: "G Ka Brew — Drinks Promo", org: "Promo Poster · Photoshop", desc: "Iced coffee lineup with torn-paper effect and layered design.", img: "image/digi-10-vanilla-latte-torn.png" },
-        { title: "Club Group Schedule Pubmat Poster", org: "Event Poster", desc: "Schedule pubmat poster for club group events.", img: "image/digi-13-afterdark-venom.png" },
-        { title: "Club Brand Pubmat", org: "Brand Design", desc: "Brand pubmat design for club identity.", img: "image/digi-15-back-to-school.png" },
-        { title: "Frappe Factory — Best Seller Menu (4 Flavors)", org: "Menu Design · Photoshop", desc: "Compact best seller layout featuring Mango Graham, Avocado Graham, Caramel Macchiato, and Kasoy Avocado.", img: "image/digi-12-best-seller-4.png" },
-        { title: "Afterdark Co. — We Are Venom Event", org: "Event Poster · Photoshop", desc: "Dark event flyer with green snake motif, artist lineup, and phone mockup presentation.", img: "image/digi-13-afterdark-venom.png" },
-        { title: "Frappe Factory — Vanilla Biscoff Coffee", org: "Product Poster · Photoshop", desc: "Featured product spotlight with Biscoff jar pairing and splatter background.", img: "image/digi-14-vanilla-biscoff.png" },
-        { title: "G Ka Brew — Back to School Promo", org: "Event Poster · Photoshop", desc: "Fun illustrated promo poster with school-themed graphics and discount offer.", img: "image/digi-15-back-to-school.png" },
-        { title: "G Ka Brew — Product Menu Drinks Lineup", org: "Menu Design · Photoshop", desc: "Full product menu with drinks lineup featuring coffee and non-coffee options.", img: "image/digi-01-coffee-menu.png" },
-        { title: "Frappe Factory — Open for Franchise", org: "Business Poster · Photoshop", desc: "Franchise opportunity poster with business package details and product lineup.", img: "image/digi-16-open-franchise.png" },
-        { title: "Frappe Factory — Shawarma Rice & Wrap", org: "Menu Poster · Photoshop", desc: "Food menu poster featuring shawarma rice bowl and wrap with pricing.", img: "image/digi-17-shawarma.png" },
-        { title: "Makiling Corp — Hero Section Design", org: "Web Design · UI/UX", desc: "Brand hero section with lifestyle photography, logo overlay, and green-toned aesthetic.", img: "image/digi-19-makiling-hero.png" },
-        { title: "Makiling Corp — Footer & Jersey Mockup", org: "Web Design · UI/UX", desc: "Contact section with jersey product mockup and social media integration.", img: "image/digi-20-makiling-footer.png" },
-        { title: "Frappe Factory — Loyalty Card", org: "Brand Design · Photoshop", desc: "Punch-card loyalty design with 10-drink reward system and product strip.", img: "image/digi-21-loyalty-card.png" },
-        { title: "Frappe Factory — Business Card", org: "Brand Design · Photoshop", desc: "Professional business card with geometric background, contact info, and product collage.", img: "image/digi-22-business-card.png" },
-      ];
-
-      const STORAGE_KEY = "portfolio_digital_projects";
-      let currentData = [];
-      let editingIndex = -1;
-
-      // Load from localStorage or defaults
-      function loadData() {
-        try {
-          const saved = localStorage.getItem(STORAGE_KEY);
-          if (saved) {
-            currentData = JSON.parse(saved);
-            // Ensure all default fields exist
-            DEFAULT_DATA.forEach((def, i) => {
-              if (!currentData[i]) currentData[i] = { ...def };
-            });
-          } else {
-            currentData = JSON.parse(JSON.stringify(DEFAULT_DATA));
-          }
-        } catch {
-          currentData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+    // ==================== DEFAULT DATA ====================
+    const DEFAULTS = {
+      hero: {
+        name: "EARL JOHN GOMEZ",
+        tagline: "FULL-STACK DEVELOPER · Multi media editor · LAS PIÑAS, PH",
+        subtitle: "Happy to work with your future projects.",
+        profileImg: "image/profile.png",
+        roles: [
+          "Full-Stack Web Developer",
+          "AI-Powered Solutions Builder",
+          "React.js & Tailwind CSS Craftsman",
+          "PHP / Node.js Backend Engineer",
+          "Multimedia Editor & Designer",
+          "REST API & Chatbot Integrator"
+        ],
+        ctaPrimary: "View Projects",
+        ctaPrimaryLink: "#work",
+        ctaSecondary: "Let's Connect",
+        ctaSecondaryLink: "https://www.facebook.com/itsm3earljohn/"
+      },
+      about: {
+        bio: "I'm a web developer and multi media editor who builds easy-to-use websites and digital tools that help businesses run smoother. Whether it's creating a custom online booking system, an automated grading tool, or a smooth checkout process, I bridge the gap between technical design and great user experience. I bring a strong eye for design, a knack for solving complex problems, and a proven track record of delivering under pressure.",
+        stats: [
+          { num: "4", suffix: "+", label: "Shipped Systems" },
+          { num: "3", suffix: "", label: "Certifications" },
+          { num: "15", suffix: "+", label: "Tools & Stacks" }
+        ],
+        skills: {
+          "Frontend": ["HTML5","CSS3","JavaScript (ES6+)","TypeScript","React.js","Next.js","Tailwind CSS","Webpack"],
+          "Backend & DB": ["PHP","Node.js","Express.js","NestJS","Laravel","Python","Java","FastAPI","MySQL"],
+          "AI & API": ["REST APIs","OpenAI API","AI Chatbots","LangChain","TensorFlow","PyTorch"],
+          "Tools & Design": ["Git / GitHub","VS Code","WordPress","Webflow","Bubble","Figma-grade UI/UX","Photoshop","Capcut","Canva","Adobe Premiere","Adobe After Effects","Adobe Illustrator"]
         }
+      },
+      projects: [
+        { id:"SYS / 01", role:"Full-Stack Developer", img:"image/heritage.png", alt:"Heritage Park Taguig Management System", title:"Heritage Park Taguig Management System", desc:"Architected a full-stack web app to streamline park operations and record management, with a responsive interface built for both desktop and mobile.", points:["Designed a responsive frontend with Tailwind CSS for optimal cross-device viewing","Implemented backend logic for database management and data retrieval","Built secure user interaction flows across the platform"], stack:["PHP","JavaScript","MySQL","Tailwind CSS"] },
+        { id:"SYS / 02", role:"Full-Stack Developer", img:"image/stdom.png", alt:"Student Health Record & Admin Analytics System", title:"Student Health Record & Admin Analytics System", desc:"An interactive analytics dashboard for medical staff and administrators, built around institutional color branding and dynamic metrics.", points:["Designed the dashboard interface with Tailwind CSS and JavaScript","Configured PHP/MySQL backend routes to pull dynamic metrics","Integrated role-based documentation and system security access"], stack:["PHP","MySQL","Tailwind CSS","JavaScript"] },
+        { id:"SYS / 03", role:"Full-Stack Developer", img:"image/roma.png", alt:"Online Booking System — ROMA Tours Corp.", title:"ROMA Online Booking (Online Bus Ticket Reservation System)", desc:"A web-based bus booking platform for real-time availability, schedules, and driver details, with an AI layer on top for customer support.", points:["Integrated an AI chatbot for real-time schedule, fare, and bus-type queries","Built a sales analytics dashboard with dynamic charts and moving averages","Automated printable receipts and email notifications for approved bookings"], stack:["PHP","MySQL","XAMPP","AI Chatbot"] },
+        { id:"SYS / 04", role:"Full-Stack Developer", img:"", alt:"", title:"Online Grading Management System — AZGH College", desc:"A grading system automating grade computation across Performance Tasks, Written Works, and Examinations for an entire college.", points:["Automated grade computation and email notifications to students","Designed an accessible, user-friendly frontend interface","Built with maintainability for non-technical administrators in mind"], stack:["PHP","XAMPP","HTML5","Tailwind CSS"] }
+      ],
+      certs: [
+        { img:"image/python.png", name:"Python", link:"https://freecodecamp.org/certification/fccaada7d45-00a6-4feb-a757-d51238c2ebea/python-v9" },
+        { img:"image/rwd.png", name:"Responsive Web Design", link:"https://freecodecamp.org/certification/fccaada7d45-00a6-4feb-a757-d51238c2ebea/responsive-web-design-v9" },
+        { img:"image/java.png", name:"JavaScript Algorithms & Data Structures", link:"https://freecodecamp.org/certification/fccaada7d45-00a6-4feb-a757-d51238c2ebea/javascript-v9" }
+      ],
+      experience: [
+        { title:"Web Development Engineer Intern", period:"2026 — 2026", org:"St. Dominic College of Asia — ICT Department", desc:"Built and maintained responsive user interfaces using HTML5, Tailwind CSS, JavaScript, and PHP, while integrating APIs, managing MySQL databases, authoring technical documentation, and performing cross-viewport debugging.", img:"" },
+        { title:"Club Promoter & Host", period:"2024 - 2025", org:"Various Locations (Quezon City, Poblacion, Malate)", desc:"Promoted nightlife events and hosted club nights. Engaged with audiences to enhance event turnout and customer experience, and maintained active promotion through social platforms.", img:"" },
+        { title:"Bimbo's Coffee Shop, Las Piñas", period:"2026 — 2026", org:"Barista / Graphic Designer", desc:"Started as a barista and was promoted to graphic designer. Designed product promotional materials, posters, and edited videos for marketing, helping improve the brand's visual identity.", img:"" },
+        { title:"The BLOKC Seminar", period:"April 2025", org:"Blockchain Technology", desc:"", img:"image/block.jpg" },
+        { title:"Daytona Seminar", period:"August 2024", org:"Technical Support Staff", desc:"", img:"image/daytona.jpg" },
+        { title:"GitHub Seminar", period:"October 2025", org:"Technical Support Staff", desc:"", img:"image/github.jpg" }
+      ],
+      digital: [
+        { title:"NEFICO NFC Pubmat Posting", org:"Digital Design", desc:"Pubmat posting design for NEFICO NFC brand promotion.", img:"image/digi-02-grand-opening.png" },
+        { title:"Logo Local Brand Creation", org:"Brand Design", desc:"Custom logo creation for a local brand identity.", img:"image/digi-18-makiling-hoodie.png" },
+        { title:"Local Clothing Brand Tshirt Merch Design", org:"Merch Design", desc:"Tshirt merchandise design for a local clothing brand.", img:"image/digi-20-makiling-footer.png" },
+        { title:"SABL Pubmat Menu", org:"Menu Design", desc:"Pubmat menu design for SABL brand.", img:"image/digi-01-coffee-menu.png" },
+        { title:"SABL Logo Creation", org:"Brand Design", desc:"Custom logo creation for SABL brand.", img:"image/digi-22-business-card.png" },
+        { title:"G Ka Brew — Matcha Pubmat", org:"Promo Poster · Photoshop", desc:"Matcha pubmat post with promo pricing.", img:"image/digi-08-frappe-promo.png" },
+        { title:"G Ka Brew — Soda Juice Menu", org:"Menu Design · Photoshop", desc:"Colorful soda juice lineup with pricing, logo, and location details.", img:"image/digi-09-soda-juice.png" },
+        { title:"G Ka Brew — Drinks Promo", org:"Promo Poster · Photoshop", desc:"Iced coffee lineup with torn-paper effect and layered design.", img:"image/digi-10-vanilla-latte-torn.png" },
+        { title:"Club Group Schedule Pubmat Poster", org:"Event Poster", desc:"Schedule pubmat poster for club group events.", img:"image/digi-13-afterdark-venom.png" },
+        { title:"Club Brand Pubmat", org:"Brand Design", desc:"Brand pubmat design for club identity.", img:"image/digi-15-back-to-school.png" },
+        { title:"Frappe Factory — Best Seller Menu (4 Flavors)", org:"Menu Design · Photoshop", desc:"Compact best seller layout featuring Mango Graham, Avocado Graham, Caramel Macchiato, and Kasoy Avocado.", img:"image/digi-12-best-seller-4.png" },
+        { title:"Afterdark Co. — We Are Venom Event", org:"Event Poster · Photoshop", desc:"Dark event flyer with green snake motif, artist lineup, and phone mockup presentation.", img:"image/digi-13-afterdark-venom.png" },
+        { title:"Frappe Factory — Vanilla Biscoff Coffee", org:"Product Poster · Photoshop", desc:"Featured product spotlight with Biscoff jar pairing and splatter background.", img:"image/digi-14-vanilla-biscoff.png" },
+        { title:"G Ka Brew — Back to School Promo", org:"Event Poster · Photoshop", desc:"Fun illustrated promo poster with school-themed graphics and discount offer.", img:"image/digi-15-back-to-school.png" },
+        { title:"G Ka Brew — Product Menu Drinks Lineup", org:"Menu Design · Photoshop", desc:"Full product menu with drinks lineup featuring coffee and non-coffee options.", img:"image/digi-01-coffee-menu.png" },
+        { title:"Frappe Factory — Open for Franchise", org:"Business Poster · Photoshop", desc:"Franchise opportunity poster with business package details and product lineup.", img:"image/digi-16-open-franchise.png" },
+        { title:"Frappe Factory — Shawarma Rice & Wrap", org:"Menu Poster · Photoshop", desc:"Food menu poster featuring shawarma rice bowl and wrap with pricing.", img:"image/digi-17-shawarma.png" },
+        { title:"Makiling Corp — Hero Section Design", org:"Web Design · UI/UX", desc:"Brand hero section with lifestyle photography, logo overlay, and green-toned aesthetic.", img:"image/digi-19-makiling-hero.png" },
+        { title:"Makiling Corp — Footer & Jersey Mockup", org:"Web Design · UI/UX", desc:"Contact section with jersey product mockup and social media integration.", img:"image/digi-20-makiling-footer.png" },
+        { title:"Frappe Factory — Loyalty Card", org:"Brand Design · Photoshop", desc:"Punch-card loyalty design with 10-drink reward system and product strip.", img:"image/digi-21-loyalty-card.png" },
+        { title:"Frappe Factory — Business Card", org:"Brand Design · Photoshop", desc:"Professional business card with geometric background, contact info, and product collage.", img:"image/digi-22-business-card.png" }
+      ],
+      education: [
+        { year:"2022 — 2026", school:"Dr. Filemon C. Aguilar Memorial College, Las Piñas", lines:["Bachelor of Science in Information Systems (BSIS)","PSITE Head Programmer since 2023-2026","Academic achiever 2024-2025"] },
+        { year:"2020 — 2022", school:"Zarate College", lines:["Senior High School Graduate","ICT Top 5 Programmer Grade 11 & 12","Best in Research 2021-2022"] },
+        { year:"2016 — 2020", school:"Captain Albert Aguilar National High School", lines:["High School Graduate","ICT top achiever since grade 8 to 10"] }
+      ],
+      contact: {
+        email: "earljohngomez66@gmail.com",
+        phone: "+639624238760",
+        phoneDisplay: "0962 423 8760",
+        facebook: "https://www.facebook.com/earljohngomez66",
+        instagram: "https://www.instagram.com/earljohngomez66",
+        location: "Las Piñas City, Philippines"
       }
+    };
 
-      function saveData() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(currentData));
-        updateStats();
-        showToast("Changes saved!");
-      }
+    const STORAGE_KEY = "portfolio_admin_data";
+    let data = {};
 
-      function resetData() {
-        if (!confirm("Reset all changes to defaults? This cannot be undone.")) return;
-        localStorage.removeItem(STORAGE_KEY);
-        currentData = JSON.parse(JSON.stringify(DEFAULT_DATA));
-        renderGrid();
-        updateStats();
-        showToast("All changes reset to defaults");
-      }
-
-      function updateStats() {
-        document.getElementById("totalCount").textContent = currentData.length;
-        let modified = 0;
-        currentData.forEach((item, i) => {
-          if (JSON.stringify(item) !== JSON.stringify(DEFAULT_DATA[i])) modified++;
+    // ==================== STORAGE ====================
+    function loadData() {
+      try {
+        const s = localStorage.getItem(STORAGE_KEY);
+        data = s ? JSON.parse(s) : JSON.parse(JSON.stringify(DEFAULTS));
+        // Ensure all keys exist
+        Object.keys(DEFAULTS).forEach(k => {
+          if (!data[k]) data[k] = JSON.parse(JSON.stringify(DEFAULTS[k]));
         });
-        document.getElementById("modifiedCount").textContent = modified;
-        const bytes = new Blob([localStorage.getItem(STORAGE_KEY) || ""]).size;
-        document.getElementById("storageSize").textContent =
-          bytes > 1024 ? (bytes / 1024).toFixed(1) + " MB" : bytes + " KB";
-      }
+      } catch { data = JSON.parse(JSON.stringify(DEFAULTS)); }
+    }
+    function saveData() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      showToast("All changes saved!");
+    }
+    function resetAll() {
+      if (!confirm("Reset EVERYTHING to defaults? Cannot be undone.")) return;
+      localStorage.removeItem(STORAGE_KEY);
+      data = JSON.parse(JSON.stringify(DEFAULTS));
+      renderAll();
+      showToast("All data reset to defaults");
+    }
 
-      function showToast(msg) {
-        const t = document.getElementById("toast");
-        t.textContent = msg;
-        t.classList.add("show");
-        setTimeout(() => t.classList.remove("show"), 2000);
-      }
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2000);
+    }
 
-      // Render grid
-      function renderGrid() {
-        const grid = document.getElementById("adminGrid");
-        grid.innerHTML = "";
-        currentData.forEach((item, i) => {
-          const card = document.createElement("div");
-          card.className = "admin-card";
-          card.innerHTML = `
-            <div class="card-img-wrap" data-index="${i}">
-              <img src="${item.img}" alt="${item.title}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 300%22><rect fill=%22%23161616%22 width=%22400%22 height=%22300%22/><text x=%2250%25%22 y=%2250%25%22 fill=%22%235c5c59%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2214%22>No Image</text></svg>'" />
-              <div class="img-overlay">Click to edit image</div>
-            </div>
-            <div class="card-body">
-              <div class="card-num">#${String(i + 1).padStart(2, "0")}</div>
-              <div class="card-title">${item.title}</div>
-              <div class="card-desc">${item.desc}</div>
-              <div class="card-actions">
-                <button class="btn" onclick="editItem(${i})">✏️ Edit</button>
-                <button class="btn danger" onclick="deleteItem(${i})">🗑️ Delete</button>
-              </div>
-            </div>
-          `;
-          grid.appendChild(card);
-        });
-        updateStats();
-      }
+    // ==================== TABS ====================
+    document.getElementById("tabs").addEventListener("click", e => {
+      const btn = e.target.closest(".tab");
+      if (!btn) return;
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById("sec-" + btn.dataset.tab).classList.add("active");
+    });
 
-      // Edit item
-      function editItem(index) {
-        editingIndex = index;
-        const item = currentData[index];
-        document.getElementById("editTitle").value = item.title;
-        document.getElementById("editDesc").value = item.desc;
-        document.getElementById("editOrg").value = item.org || "";
-        document.getElementById("editImageName").textContent = "";
-        const preview = document.getElementById("editImgPreview");
-        preview.innerHTML = `<img src="${item.img}" alt="" />`;
-        document.getElementById("editImageInput").value = "";
-        document.getElementById("editModal").classList.add("open");
-        document.body.style.overflow = "hidden";
-      }
+    // ==================== RENDER ====================
+    function renderAll() {
+      renderHero();
+      renderAbout();
+      renderProjects();
+      renderCerts();
+      renderExperience();
+      renderDigital();
+      renderEducation();
+      renderContact();
+    }
 
-      function closeModal() {
-        document.getElementById("editModal").classList.remove("open");
-        document.body.style.overflow = "";
-        editingIndex = -1;
-      }
+    // --- HERO ---
+    function renderHero() {
+      const h = data.hero;
+      document.getElementById("heroFields").innerHTML = `
+        <div class="form-group"><label>Full Name</label><input id="h-name" value="${esc(h.name)}"></div>
+        <div class="form-group"><label>Tagline</label><input id="h-tagline" value="${esc(h.tagline)}"></div>
+        <div class="form-group"><label>Subtitle</label><input id="h-subtitle" value="${esc(h.subtitle)}"></div>
+        <div class="form-group"><label>Profile Image URL</label><input id="h-img" value="${esc(h.profileImg)}"></div>
+        <div class="form-group"><label>CTA Primary Text</label><input id="h-cta1" value="${esc(h.ctaPrimary)}"></div>
+        <div class="form-group"><label>CTA Primary Link</label><input id="h-cta1l" value="${esc(h.ctaPrimaryLink)}"></div>
+        <div class="form-group"><label>CTA Secondary Text</label><input id="h-cta2" value="${esc(h.ctaSecondary)}"></div>
+        <div class="form-group"><label>CTA Secondary Link</label><input id="h-cta2l" value="${esc(h.ctaSecondaryLink)}"></div>
+        <div class="form-group"><label>Typing Roles (one per line)</label><textarea id="h-roles" rows="6">${h.roles.join("\n")}</textarea></div>
+        <button class="btn primary" onclick="saveHero()">Save Hero</button>
+      `;
+    }
+    function saveHero() {
+      data.hero.name = document.getElementById("h-name").value;
+      data.hero.tagline = document.getElementById("h-tagline").value;
+      data.hero.subtitle = document.getElementById("h-subtitle").value;
+      data.hero.profileImg = document.getElementById("h-img").value;
+      data.hero.ctaPrimary = document.getElementById("h-cta1").value;
+      data.hero.ctaPrimaryLink = document.getElementById("h-cta1l").value;
+      data.hero.ctaSecondary = document.getElementById("h-cta2").value;
+      data.hero.ctaSecondaryLink = document.getElementById("h-cta2l").value;
+      data.hero.roles = document.getElementById("h-roles").value.split("\n").map(s=>s.trim()).filter(Boolean);
+      saveData();
+    }
 
-      function saveEdit() {
-        if (editingIndex < 0) return;
-        currentData[editingIndex].title = document.getElementById("editTitle").value;
-        currentData[editingIndex].desc = document.getElementById("editDesc").value;
-        currentData[editingIndex].org = document.getElementById("editOrg").value;
-
-        // Check if new image was selected
-        const fileInput = document.getElementById("editImageInput");
-        if (fileInput.files && fileInput.files[0]) {
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            currentData[editingIndex].img = e.target.result;
-            renderGrid();
-            saveData();
-          };
-          reader.readAsDataURL(fileInput.files[0]);
-        } else {
-          renderGrid();
-          saveData();
-        }
-        closeModal();
-      }
-
-      // Delete item
-      function deleteItem(index) {
-        if (!confirm(`Delete "${currentData[index].title}"?`)) return;
-        currentData.splice(index, 1);
-        renderGrid();
-        saveData();
-        showToast("Item deleted");
-      }
-
-      // Image preview on file select
-      document.getElementById("editImageInput").addEventListener("change", function () {
-        if (this.files && this.files[0]) {
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            document.getElementById("editImgPreview").innerHTML =
-              `<img src="${e.target.result}" alt="" />`;
-          };
-          reader.readAsDataURL(this.files[0]);
-          document.getElementById("editImageName").textContent = this.files[0].name;
-        }
+    // --- ABOUT ---
+    function renderAbout() {
+      const a = data.about;
+      document.getElementById("aboutFields").innerHTML = `
+        <div class="form-group"><label>Bio</label><textarea id="a-bio" rows="4">${esc(a.bio)}</textarea></div>
+        <h3 style="margin:18px 0 10px;font-size:14px">Stats</h3>
+        ${a.stats.map((s,i) => `
+          <div class="form-row" style="margin-bottom:10px;align-items:end">
+            <div class="form-group"><label>Number</label><input class="a-stat-num" data-i="${i}" value="${esc(s.num)}"></div>
+            <div class="form-group"><label>Suffix</label><input class="a-stat-suf" data-i="${i}" value="${esc(s.suffix)}"></div>
+            <div class="form-group"><label>Label</label><input class="a-stat-lbl" data-i="${i}" value="${esc(s.label)}"></div>
+          </div>
+        `).join("")}
+        <button class="btn primary" onclick="saveAbout()">Save About</button>
+      `;
+      // Skills
+      const sk = a.skills;
+      let skHtml = "";
+      Object.keys(sk).forEach(cat => {
+        skHtml += `<div style="margin-bottom:16px"><div class="form-group"><label>${esc(cat)}</label><input class="a-skill" data-cat="${esc(cat)}" value="${esc(sk[cat].join(", "))}"></div></div>`;
       });
-
-      // Event listeners
-      document.getElementById("modalClose").addEventListener("click", closeModal);
-      document.getElementById("modalCancel").addEventListener("click", closeModal);
-      document.getElementById("modalSave").addEventListener("click", saveEdit);
-      document.getElementById("saveAllBtn").addEventListener("click", saveData);
-      document.getElementById("resetBtn").addEventListener("click", resetData);
-      document.getElementById("editModal").addEventListener("click", function (e) {
-        if (e.target === this) closeModal();
+      document.getElementById("skillsFields").innerHTML = skHtml + `<button class="btn primary" onclick="saveSkills()">Save Skills</button>`;
+    }
+    function saveAbout() {
+      data.about.bio = document.getElementById("a-bio").value;
+      document.querySelectorAll(".a-stat-num").forEach((el,i) => { data.about.stats[i].num = el.value; });
+      document.querySelectorAll(".a-stat-suf").forEach((el,i) => { data.about.stats[i].suffix = el.value; });
+      document.querySelectorAll(".a-stat-lbl").forEach((el,i) => { data.about.stats[i].label = el.value; });
+      saveData();
+    }
+    function saveSkills() {
+      document.querySelectorAll(".a-skill").forEach(el => {
+        data.about.skills[el.dataset.cat] = el.value.split(",").map(s=>s.trim()).filter(Boolean);
       });
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeModal();
-      });
+      saveData();
+    }
 
-      // Init
-      loadData();
-      renderGrid();
+    // --- LIST SECTIONS (projects, certs, experience, digital, education) ---
+    function renderListSection(key, containerId, fieldsFn) {
+      const items = data[key];
+      const container = document.getElementById(containerId);
+      container.innerHTML = items.map((item, i) => `
+        <div class="item-card" id="card-${key}-${i}">
+          <div class="item-header" onclick="toggleCard('${key}-${i}')">
+            <span class="item-num">#${String(i+1).padStart(2,"0")}</span>
+            <span class="item-title">${esc(item.title || item.name || item.school || "")}</span>
+            <button class="btn sm" onclick="event.stopPropagation();toggleCard('${key}-${i}')">Edit</button>
+            <button class="btn sm danger" onclick="event.stopPropagation();removeItem('${key}',${i})">✕</button>
+          </div>
+          <div class="item-body">${fieldsFn(item, i, key)}</div>
+        </div>
+      `).join("");
+    }
+
+    function toggleCard(id) {
+      document.getElementById("card-"+id)?.classList.toggle("open");
+    }
+
+    // Project fields
+    function projectFields(p, i) {
+      return `
+        <div class="item-fields">
+          <div class="form-row">
+            <div class="form-group"><label>ID</label><input class="pf-id" data-i="${i}" value="${esc(p.id)}"></div>
+            <div class="form-group"><label>Role</label><input class="pf-role" data-i="${i}" value="${esc(p.role)}"></div>
+          </div>
+          <div class="form-group"><label>Title</label><input class="pf-title" data-i="${i}" value="${esc(p.title)}"></div>
+          <div class="form-group"><label>Description</label><textarea class="pf-desc" data-i="${i}">${esc(p.desc)}</textarea></div>
+          <div class="form-group"><label>Image URL</label><input class="pf-img" data-i="${i}" value="${esc(p.img)}"></div>
+          <div class="form-group"><label>Points (one per line)</label><textarea class="pf-points" data-i="${i}" rows="3">${p.points.join("\n")}</textarea></div>
+          <div class="form-group"><label>Stack (comma separated)</label><input class="pf-stack" data-i="${i}" value="${esc(p.stack.join(", "))}"></div>
+          <div class="item-actions"><button class="btn primary sm" onclick="saveProject(${i})">Save</button></div>
+        </div>`;
+    }
+    function saveProject(i) {
+      const p = data.projects[i];
+      p.id = document.querySelector(`.pf-id[data-i="${i}"]`).value;
+      p.role = document.querySelector(`.pf-role[data-i="${i}"]`).value;
+      p.title = document.querySelector(`.pf-title[data-i="${i}"]`).value;
+      p.desc = document.querySelector(`.pf-desc[data-i="${i}"]`).value;
+      p.img = document.querySelector(`.pf-img[data-i="${i}"]`).value;
+      p.points = document.querySelector(`.pf-points[data-i="${i}"]`).value.split("\n").map(s=>s.trim()).filter(Boolean);
+      p.stack = document.querySelector(`.pf-stack[data-i="${i}"]`).value.split(",").map(s=>s.trim()).filter(Boolean);
+      saveData();
+    }
+
+    // Cert fields
+    function certFields(c, i) {
+      return `
+        <div class="item-fields">
+          <div class="form-group"><label>Name</label><input class="cf-name" data-i="${i}" value="${esc(c.name)}"></div>
+          <div class="form-group"><label>Image URL</label><input class="cf-img" data-i="${i}" value="${esc(c.img)}"></div>
+          <div class="form-group"><label>Credential Link</label><input class="cf-link" data-i="${i}" value="${esc(c.link)}"></div>
+          <div class="item-actions"><button class="btn primary sm" onclick="saveCert(${i})">Save</button></div>
+        </div>`;
+    }
+    function saveCert(i) {
+      const c = data.certs[i];
+      c.name = document.querySelector(`.cf-name[data-i="${i}"]`).value;
+      c.img = document.querySelector(`.cf-img[data-i="${i}"]`).value;
+      c.link = document.querySelector(`.cf-link[data-i="${i}"]`).value;
+      saveData();
+    }
+
+    // Experience fields
+    function expFields(e, i) {
+      return `
+        <div class="item-fields">
+          <div class="form-group"><label>Title</label><input class="ef-title" data-i="${i}" value="${esc(e.title)}"></div>
+          <div class="form-row">
+            <div class="form-group"><label>Period</label><input class="ef-period" data-i="${i}" value="${esc(e.period)}"></div>
+            <div class="form-group"><label>Organization</label><input class="ef-org" data-i="${i}" value="${esc(e.org)}"></div>
+          </div>
+          <div class="form-group"><label>Description</label><textarea class="ef-desc" data-i="${i}">${esc(e.desc)}</textarea></div>
+          <div class="form-group"><label>Image URL (optional)</label><input class="ef-img" data-i="${i}" value="${esc(e.img)}"></div>
+          <div class="item-actions"><button class="btn primary sm" onclick="saveExp(${i})">Save</button></div>
+        </div>`;
+    }
+    function saveExp(i) {
+      const e = data.experience[i];
+      e.title = document.querySelector(`.ef-title[data-i="${i}"]`).value;
+      e.period = document.querySelector(`.ef-period[data-i="${i}"]`).value;
+      e.org = document.querySelector(`.ef-org[data-i="${i}"]`).value;
+      e.desc = document.querySelector(`.ef-desc[data-i="${i}"]`).value;
+      e.img = document.querySelector(`.ef-img[data-i="${i}"]`).value;
+      saveData();
+    }
+
+    // Digital fields
+    function digFields(d, i) {
+      return `
+        <div class="item-fields">
+          <div class="form-group"><label>Title</label><input class="df-title" data-i="${i}" value="${esc(d.title)}"></div>
+          <div class="form-row">
+            <div class="form-group"><label>Category</label><input class="df-org" data-i="${i}" value="${esc(d.org)}"></div>
+          </div>
+          <div class="form-group"><label>Description</label><textarea class="df-desc" data-i="${i}">${esc(d.desc)}</textarea></div>
+          <div class="form-group"><label>Image URL</label><input class="df-img" data-i="${i}" value="${esc(d.img)}"></div>
+          <div class="item-actions"><button class="btn primary sm" onclick="saveDig(${i})">Save</button></div>
+        </div>`;
+    }
+    function saveDig(i) {
+      const d = data.digital[i];
+      d.title = document.querySelector(`.df-title[data-i="${i}"]`).value;
+      d.org = document.querySelector(`.df-org[data-i="${i}"]`).value;
+      d.desc = document.querySelector(`.df-desc[data-i="${i}"]`).value;
+      d.img = document.querySelector(`.df-img[data-i="${i}"]`).value;
+      saveData();
+    }
+
+    // Education fields
+    function eduFields(e, i) {
+      return `
+        <div class="item-fields">
+          <div class="form-row">
+            <div class="form-group"><label>Year</label><input class="edf-year" data-i="${i}" value="${esc(e.year)}"></div>
+            <div class="form-group"><label>School</label><input class="edf-school" data-i="${i}" value="${esc(e.school)}"></div>
+          </div>
+          <div class="form-group"><label>Details (one per line)</label><textarea class="edf-lines" data-i="${i}" rows="3">${e.lines.join("\n")}</textarea></div>
+          <div class="item-actions"><button class="btn primary sm" onclick="saveEdu(${i})">Save</button></div>
+        </div>`;
+    }
+    function saveEdu(i) {
+      const e = data.education[i];
+      e.year = document.querySelector(`.edf-year[data-i="${i}"]`).value;
+      e.school = document.querySelector(`.edf-school[data-i="${i}"]`).value;
+      e.lines = document.querySelector(`.edf-lines[data-i="${i}"]`).value.split("\n").map(s=>s.trim()).filter(Boolean);
+      saveData();
+    }
+
+    // --- CONTACT ---
+    function renderContact() {
+      const c = data.contact;
+      document.getElementById("contactFields").innerHTML = `
+        <div class="form-group"><label>Email</label><input id="c-email" value="${esc(c.email)}"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Phone (raw)</label><input id="c-phone" value="${esc(c.phone)}"></div>
+          <div class="form-group"><label>Phone (display)</label><input id="c-phoneD" value="${esc(c.phoneDisplay)}"></div>
+        </div>
+        <div class="form-group"><label>Facebook URL</label><input id="c-fb" value="${esc(c.facebook)}"></div>
+        <div class="form-group"><label>Instagram URL</label><input id="c-ig" value="${esc(c.instagram)}"></div>
+        <div class="form-group"><label>Location</label><input id="c-loc" value="${esc(c.location)}"></div>
+        <button class="btn primary" onclick="saveContact()">Save Contact</button>
+      `;
+    }
+    function saveContact() {
+      data.contact.email = document.getElementById("c-email").value;
+      data.contact.phone = document.getElementById("c-phone").value;
+      data.contact.phoneDisplay = document.getElementById("c-phoneD").value;
+      data.contact.facebook = document.getElementById("c-fb").value;
+      data.contact.instagram = document.getElementById("c-ig").value;
+      data.contact.location = document.getElementById("c-loc").value;
+      saveData();
+    }
+
+    // ==================== ADD / REMOVE ====================
+    function addItem(key) {
+      const templates = {
+        projects: { id:"SYS / 05", role:"Developer", img:"", alt:"", title:"New Project", desc:"Description here.", points:["Point 1"], stack:["HTML"] },
+        certs: { img:"", name:"New Certification", link:"" },
+        experience: { title:"New Experience", period:"2024", org:"Organization", desc:"Description.", img:"" },
+        digital: { title:"New Digital Design", org:"Category", desc:"Description.", img:"" },
+        education: { year:"2024", school:"School Name", lines:["Detail 1"] }
+      };
+      data[key].push(templates[key]);
+      saveData();
+      renderAll();
+    }
+    function removeItem(key, i) {
+      if (!confirm("Delete this item?")) return;
+      data[key].splice(i, 1);
+      saveData();
+      renderAll();
+    }
+
+    // ==================== UTILS ====================
+    function esc(s) { return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+    // ==================== INIT ====================
+    document.getElementById("saveAllBtn").addEventListener("click", saveData);
+    document.getElementById("resetAllBtn").addEventListener("click", resetAll);
+
+    // Auto-save from hero fields on blur
+    document.getElementById("heroFields")?.addEventListener("focusout", saveHero);
+    document.getElementById("aboutFields")?.addEventListener("focusout", saveAbout);
+    document.getElementById("contactFields")?.addEventListener("focusout", saveContact);
+
+    loadData();
+    renderAll();
     </script>
   </body>
 </html>

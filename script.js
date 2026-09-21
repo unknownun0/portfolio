@@ -1,5 +1,15 @@
 "use strict";
 
+// ------------------------- localStorage helper -------------------------
+const ADMIN_KEY = "portfolio_admin_data";
+function getAdminData(section) {
+  try {
+    const s = localStorage.getItem(ADMIN_KEY);
+    if (s) { const d = JSON.parse(s); if (d[section]) return d[section]; }
+  } catch {}
+  return null;
+}
+
 // ------------------------- local AI knowledge base -------------------------
 // Edit content here — the page renders itself from this data.
 const DATA = {
@@ -304,7 +314,9 @@ const reduceMotion = window.matchMedia(
 function renderProjects() {
   const track = document.getElementById("projTrack");
   if (!track) return;
-  DATA.projects.forEach((p) => {
+  const adminProjects = getAdminData("projects");
+  const projects = adminProjects || DATA.projects;
+  projects.forEach((p) => {
     const card = el("article", "proj-card");
     const top = el("div", "proj-top");
     top.append(el("span", "proj-id", p.id), el("span", "proj-role", p.role));
@@ -330,7 +342,9 @@ function renderProjects() {
 function renderCerts() {
   const track = document.getElementById("certTrack");
   if (!track) return;
-  DATA.certs.forEach((c) => {
+  const adminCerts = getAdminData("certs");
+  const certs = adminCerts || DATA.certs;
+  certs.forEach((c) => {
     const card = el("article", "cert-card");
     const icon = el("div", "cert-icon");
     icon.innerHTML =
@@ -357,7 +371,9 @@ function renderCerts() {
 function renderExperience() {
   const track = document.getElementById("expTrack");
   if (!track) return;
-  DATA.experience.forEach((e) => {
+  const adminExp = getAdminData("experience");
+  const experience = adminExp || DATA.experience;
+  experience.forEach((e) => {
     const card = el("article", "cert-card");
     if (e.img) {
       const img = el("img", "cert-img");
@@ -377,12 +393,8 @@ function renderExperience() {
 function renderDigitalProjects() {
   const grid = document.getElementById("digGrid");
   if (!grid) return;
-  // Load admin data from localStorage if available
-  let items = DATA.digitalProjects;
-  try {
-    const saved = localStorage.getItem("portfolio_digital_projects");
-    if (saved) items = JSON.parse(saved);
-  } catch {}
+  const adminDig = getAdminData("digital");
+  const items = adminDig || DATA.digitalProjects;
   items.forEach((d) => {
     const card = el("article", "dig-card");
     if (d.img) {
@@ -433,7 +445,9 @@ document.addEventListener("keydown", (e) => {
 function renderEducation() {
   const grid = document.getElementById("eduGrid");
   if (!grid) return;
-  DATA.education.forEach((edu, i) => {
+  const adminEdu = getAdminData("education");
+  const education = adminEdu || DATA.education;
+  education.forEach((edu, i) => {
     const card = el("div", "edu-card");
     if (i % 2 === 0) card.style.animationDelay = i * 0.08 + "s";
     card.append(el("span", "edu-year", edu.year));
@@ -542,7 +556,9 @@ function initCountUp() {
 // ------------------------- AI typing effect -------------------------
 function initTypewriter() {
   const typeText = document.getElementById("typeText");
-  if (!typeText || !DATA.roles.length) return;
+  const adminHero = getAdminData("hero");
+  const roles = (adminHero && adminHero.roles) || DATA.roles;
+  if (!typeText || !roles.length) return;
   if (reduceMotion) {
     typeText.textContent = DATA.roles[0];
     return;
@@ -555,7 +571,7 @@ function initTypewriter() {
   const HOLD_MS = 1700;
 
   function tick() {
-    const role = DATA.roles[roleIdx];
+    const role = roles[roleIdx];
     if (!deleting) {
       charIdx += 1;
       typeText.textContent = role.slice(0, charIdx);
@@ -570,7 +586,7 @@ function initTypewriter() {
       typeText.textContent = role.slice(0, charIdx);
       if (charIdx === 0) {
         deleting = false;
-        roleIdx = (roleIdx + 1) % DATA.roles.length;
+        roleIdx = (roleIdx + 1) % roles.length;
         setTimeout(tick, 400);
         return;
       }
@@ -780,6 +796,53 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 // ------------------------- boot -------------------------
 document.addEventListener("DOMContentLoaded", () => {
+  // Apply admin hero data to DOM
+  const ah = getAdminData("hero");
+  if (ah) {
+    const h1 = document.querySelector(".hero h1");
+    if (h1 && ah.name) {
+      const parts = ah.name.split(" ");
+      const mid = Math.ceil(parts.length / 2);
+      h1.innerHTML = `<span class="line"><span>${parts.slice(0, mid).join(" ")}</span></span><span class="line"><span>${parts.slice(mid).join(" ")}</span></span>`;
+    }
+    const tagline = document.querySelector(".eyebrow");
+    if (tagline && ah.tagline) tagline.innerHTML = `<span class="dot"></span> ${ah.tagline}`;
+    const sub = document.querySelector(".hero-sub");
+    if (sub && ah.subtitle) sub.textContent = ah.subtitle;
+    const profImg = document.querySelector(".portrait-clip img");
+    if (profImg && ah.profileImg) profImg.src = ah.profileImg;
+    const ctaBtns = document.querySelectorAll(".hero-actions .btn");
+    if (ctaBtns[0] && ah.ctaPrimary) { ctaBtns[0].textContent = ah.ctaPrimary; ctaBtns[0].href = ah.ctaPrimaryLink; }
+    if (ctaBtns[1] && ah.ctaSecondary) { ctaBtns[1].textContent = ah.ctaSecondary; ctaBtns[1].href = ah.ctaSecondaryLink; }
+  }
+  // Apply admin about data
+  const ab = getAdminData("about");
+  if (ab) {
+    const bioP = document.querySelector("#about .about-grid p");
+    if (bioP && ab.bio) bioP.innerHTML = ab.bio;
+    const statNums = document.querySelectorAll(".stat .num");
+    if (statNums.length && ab.stats) {
+      statNums.forEach((n, i) => {
+        if (ab.stats[i]) { n.dataset.count = ab.stats[i].num; n.dataset.suffix = ab.stats[i].suffix; n.textContent = ab.stats[i].num + ab.stats[i].suffix; }
+        const lbl = n.parentElement.querySelector(".lbl");
+        if (lbl && ab.stats[i]) lbl.textContent = ab.stats[i].label;
+      });
+    }
+  }
+  // Apply admin contact data
+  const ac = getAdminData("contact");
+  if (ac) {
+    const emailEl = document.getElementById("emailLink");
+    if (emailEl && ac.email) { emailEl.textContent = ac.email; emailEl.dataset.email = ac.email; emailEl.href = "mailto:" + ac.email; }
+    const phoneEl = document.getElementById("phoneLink");
+    if (phoneEl && ac.phoneDisplay) { phoneEl.textContent = ac.phoneDisplay; phoneEl.href = "tel:" + ac.phone; }
+    const titleLink = document.querySelector(".contact-title a");
+    if (titleLink && ac.email) titleLink.href = "mailto:" + ac.email;
+  }
+  // Apply admin nav links
+  const navResume = document.getElementById("navResume");
+  if (navResume) navResume.href = "ATS CV EARL.pdf";
+
   renderProjects();
   renderCerts();
   renderExperience();
@@ -793,7 +856,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "projNext",
     "projFill",
     "projCount",
-    DATA.projects.length,
+    (getAdminData("projects") || DATA.projects).length,
   );
   initCarousel(
     "certTrack",
@@ -801,7 +864,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "certNext",
     "certFill",
     "certCount",
-    DATA.certs.length,
+    (getAdminData("certs") || DATA.certs).length,
   );
   initCarousel(
     "expTrack",
@@ -809,6 +872,6 @@ document.addEventListener("DOMContentLoaded", () => {
     "expNext",
     "expFill",
     "expCount",
-    DATA.experience.length,
+    (getAdminData("experience") || DATA.experience).length,
   );
 });
