@@ -843,6 +843,70 @@ document.addEventListener("DOMContentLoaded", () => {
   const navResume = document.getElementById("navResume");
   if (navResume) navResume.href = "ATS CV EARL.pdf";
 
+  // Apply admin global data
+  const ag = getAdminData("global");
+  if (ag) {
+    // Brand name in nav
+    document.querySelectorAll(".brand").forEach(b => {
+      const svg = b.querySelector("svg");
+      if (ag.brandName) {
+        b.innerHTML = "";
+        if (svg) b.appendChild(svg);
+        b.appendChild(document.createTextNode(" " + ag.brandName));
+      }
+    });
+    // Portrait tag
+    const ptag = document.querySelector(".portrait-tag");
+    if (ptag && ag.portraitTag) ptag.textContent = ag.portraitTag;
+    // Scroll cue
+    const scue = document.querySelector(".scroll-cue");
+    if (scue && ag.scrollCue) scue.innerHTML = `<span class="bar"></span> ${ag.scrollCue}`;
+    // Footer
+    const footBrand = document.querySelector("footer .brand");
+    if (footBrand && ag.footerCopyright) {
+      const yearEl = footBrand.querySelector("#year");
+      footBrand.textContent = ag.footerCopyright + " ";
+      if (yearEl) footBrand.appendChild(yearEl);
+      else { const y = document.createElement("span"); y.id = "year"; y.textContent = new Date().getFullYear(); footBrand.appendChild(y); }
+    }
+    const footText = document.querySelector("footer .foot-row span:last-child");
+    if (footText && ag.footerText) footText.textContent = ag.footerText;
+    // Resume link
+    if (navResume && ag.resumeFile) navResume.href = ag.resumeFile;
+    if (navResume && ag.resumeText) navResume.textContent = ag.resumeText;
+    // Say hello
+    const helloLink = document.querySelector(".nav-hello");
+    if (helloLink) {
+      if (ag.sayHelloText) helloLink.textContent = ag.sayHelloText;
+      if (ag.sayHelloLink) helloLink.href = ag.sayHelloLink;
+    }
+  }
+
+  // Apply admin section headers
+  const ash = getAdminData("sections");
+  if (ash) {
+    const sectionMap = { about:"#about", projects:"#work", certs:"#certs", experience:"#experience", digital:"#digital", education:"#education", contact:"#contact" };
+    Object.keys(ash).forEach(k => {
+      const sec = document.querySelector(sectionMap[k]);
+      if (!sec) return;
+      const numEl = sec.querySelector(".sec-num");
+      const titleEl = sec.querySelector(".sec-title");
+      const descEl = sec.querySelector(".sec-desc");
+      if (numEl && ash[k].num) numEl.textContent = ash[k].num;
+      if (titleEl && ash[k].title) titleEl.textContent = ash[k].title;
+      if (descEl && ash[k].desc !== undefined) descEl.textContent = ash[k].desc;
+    });
+    // Contact eyebrow
+    const contactEyebrow = document.querySelector("#contact .eyebrow");
+    if (contactEyebrow && ash.contact) {
+      contactEyebrow.innerHTML = `<span class="dot"></span> ${ash.contact.num}`;
+    }
+    const contactTitle = document.querySelector(".contact-title a");
+    if (contactTitle && ash.contact && ash.contact.title) {
+      contactTitle.innerHTML = ash.contact.title.replace("<br />", "<br>").replace("\n", "<br>");
+    }
+  }
+
   renderProjects();
   renderCerts();
   renderExperience();

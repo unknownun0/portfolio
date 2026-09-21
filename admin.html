@@ -115,8 +115,10 @@
     </header>
 
     <nav class="tabs" id="tabs">
-      <button class="tab active" data-tab="hero">Hero</button>
+      <button class="tab active" data-tab="global">Global</button>
+      <button class="tab" data-tab="hero">Hero</button>
       <button class="tab" data-tab="about">About</button>
+      <button class="tab" data-tab="sections">Sections</button>
       <button class="tab" data-tab="projects">Projects</button>
       <button class="tab" data-tab="certs">Certs</button>
       <button class="tab" data-tab="experience">Experience</button>
@@ -126,10 +128,17 @@
     </nav>
 
     <div class="content">
+      <!-- GLOBAL -->
+      <div class="section active" id="sec-global">
+        <h2>Global Settings</h2>
+        <p class="sub">Nav brand name, footer text, copyright, and site-wide labels.</p>
+        <div id="globalFields"></div>
+      </div>
+
       <!-- HERO -->
-      <div class="section active" id="sec-hero">
+      <div class="section" id="sec-hero">
         <h2>Hero Section</h2>
-        <p class="sub">Name, title, typing roles, and profile image.</p>
+        <p class="sub">Name, title, typing roles, profile image, portrait tag, and scroll cue.</p>
         <div id="heroFields"></div>
       </div>
 
@@ -140,6 +149,13 @@
         <div id="aboutFields"></div>
         <h3 style="margin:24px 0 12px;font-size:15px;">Skills</h3>
         <div id="skillsFields"></div>
+      </div>
+
+      <!-- SECTION HEADERS -->
+      <div class="section" id="sec-sections">
+        <h2>Section Headers</h2>
+        <p class="sub">Number, title, and description for each section on the page.</p>
+        <div id="sectionsFields"></div>
       </div>
 
       <!-- PROJECTS -->
@@ -261,6 +277,19 @@
 
     // ==================== DEFAULT DATA ====================
     const DEFAULTS = {
+      global: {
+        brandName: "EARL JOHN GOMEZ",
+        navLinks: ["Work","Certs","Experience","Contact"],
+        resumeFile: "ATS CV EARL.pdf",
+        resumeText: "RESUME ↓",
+        sayHelloText: "SAY HELLO →",
+        sayHelloLink: "mailto:earljohngomez66@gmail.com",
+        footerText: "Happy to work with your future projects",
+        footerCopyright: "EARL JOHN GOMEZ ©",
+        adminLinkText: "⚙ Admin",
+        portraitTag: "EST. 2022 — PRESENT",
+        scrollCue: "SCROLL"
+      },
       hero: {
         name: "EARL JOHN GOMEZ",
         tagline: "FULL-STACK DEVELOPER · Multi media editor · LAS PIÑAS, PH",
@@ -347,6 +376,15 @@
         facebook: "https://www.facebook.com/earljohngomez66",
         instagram: "https://www.instagram.com/earljohngomez66",
         location: "Las Piñas City, Philippines"
+      },
+      sections: {
+        about: { num: "01 — ABOUT", title: "Profile", desc: "A quick read on how I work and what I bring to a build." },
+        projects: { num: "02 — SELECTED WORK", title: "Projects", desc: "Drag, scroll, or use the arrows — four systems built end to end." },
+        certs: { num: "03 — CREDENTIALS", title: "Certifications", desc: "Certifications, verified and linked." },
+        experience: { num: "04 — BACKGROUND", title: "Experience & Seminars", desc: "Experience and seminar participation." },
+        digital: { num: "05 — DIGITAL", title: "Digital Projects", desc: "Brand design, menu layouts, and promotional materials." },
+        education: { num: "06 — EDUCATION", title: "Education", desc: "" },
+        contact: { num: "07 — CONTACT", title: "Let's build something.", desc: "" }
       }
     };
 
@@ -395,8 +433,10 @@
 
     // ==================== RENDER ====================
     function renderAll() {
+      renderGlobal();
       renderHero();
       renderAbout();
+      renderSections();
       renderProjects();
       renderCerts();
       renderExperience();
@@ -405,19 +445,70 @@
       renderContact();
     }
 
+    // --- GLOBAL ---
+    function renderGlobal() {
+      const g = data.global;
+      document.getElementById("globalFields").innerHTML = `
+        <div class="form-group"><label>Brand / Nav Name</label><input id="g-brand" value="${esc(g.brandName)}"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Resume File</label><input id="g-resume" value="${esc(g.resumeFile)}"></div>
+          <div class="form-group"><label>Resume Button Text</label><input id="g-resumeTxt" value="${esc(g.resumeText)}"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Say Hello Text</label><input id="g-helloTxt" value="${esc(g.sayHelloText)}"></div>
+          <div class="form-group"><label>Say Hello Link</label><input id="g-helloLink" value="${esc(g.sayHelloLink)}"></div>
+        </div>
+        <div class="form-group"><label>Nav Links (comma separated)</label><input id="g-navLinks" value="${esc(g.navLinks.join(", "))}"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Footer Text</label><input id="g-footerTxt" value="${esc(g.footerText)}"></div>
+          <div class="form-group"><label>Copyright Text</label><input id="g-copyright" value="${esc(g.footerCopyright)}"></div>
+        </div>
+        <div class="form-group"><label>Admin Link Text (footer)</label><input id="g-adminTxt" value="${esc(g.adminLinkText)}"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Portrait Tag</label><input id="g-portraitTag" value="${esc(g.portraitTag)}"></div>
+          <div class="form-group"><label>Scroll Cue Text</label><input id="g-scrollCue" value="${esc(g.scrollCue)}"></div>
+        </div>
+        <button class="btn primary" onclick="saveGlobal()">Save Global</button>
+      `;
+    }
+    function saveGlobal() {
+      const g = data.global;
+      g.brandName = document.getElementById("g-brand").value;
+      g.resumeFile = document.getElementById("g-resume").value;
+      g.resumeText = document.getElementById("g-resumeTxt").value;
+      g.sayHelloText = document.getElementById("g-helloTxt").value;
+      g.sayHelloLink = document.getElementById("g-helloLink").value;
+      g.navLinks = document.getElementById("g-navLinks").value.split(",").map(s=>s.trim()).filter(Boolean);
+      g.footerText = document.getElementById("g-footerTxt").value;
+      g.footerCopyright = document.getElementById("g-copyright").value;
+      g.adminLinkText = document.getElementById("g-adminTxt").value;
+      g.portraitTag = document.getElementById("g-portraitTag").value;
+      g.scrollCue = document.getElementById("g-scrollCue").value;
+      saveData();
+    }
+
     // --- HERO ---
     function renderHero() {
       const h = data.hero;
+      const g = data.global;
       document.getElementById("heroFields").innerHTML = `
         <div class="form-group"><label>Full Name</label><input id="h-name" value="${esc(h.name)}"></div>
         <div class="form-group"><label>Tagline</label><input id="h-tagline" value="${esc(h.tagline)}"></div>
         <div class="form-group"><label>Subtitle</label><input id="h-subtitle" value="${esc(h.subtitle)}"></div>
         <div class="form-group"><label>Profile Image URL</label><input id="h-img" value="${esc(h.profileImg)}"></div>
-        <div class="form-group"><label>CTA Primary Text</label><input id="h-cta1" value="${esc(h.ctaPrimary)}"></div>
-        <div class="form-group"><label>CTA Primary Link</label><input id="h-cta1l" value="${esc(h.ctaPrimaryLink)}"></div>
-        <div class="form-group"><label>CTA Secondary Text</label><input id="h-cta2" value="${esc(h.ctaSecondary)}"></div>
-        <div class="form-group"><label>CTA Secondary Link</label><input id="h-cta2l" value="${esc(h.ctaSecondaryLink)}"></div>
+        <div class="form-row">
+          <div class="form-group"><label>CTA Primary Text</label><input id="h-cta1" value="${esc(h.ctaPrimary)}"></div>
+          <div class="form-group"><label>CTA Primary Link</label><input id="h-cta1l" value="${esc(h.ctaPrimaryLink)}"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>CTA Secondary Text</label><input id="h-cta2" value="${esc(h.ctaSecondary)}"></div>
+          <div class="form-group"><label>CTA Secondary Link</label><input id="h-cta2l" value="${esc(h.ctaSecondaryLink)}"></div>
+        </div>
         <div class="form-group"><label>Typing Roles (one per line)</label><textarea id="h-roles" rows="6">${h.roles.join("\n")}</textarea></div>
+        <div class="form-row">
+          <div class="form-group"><label>Portrait Tag</label><input id="h-portraitTag" value="${esc(g.portraitTag)}"></div>
+          <div class="form-group"><label>Scroll Cue Text</label><input id="h-scrollCue" value="${esc(g.scrollCue)}"></div>
+        </div>
         <button class="btn primary" onclick="saveHero()">Save Hero</button>
       `;
     }
@@ -431,6 +522,8 @@
       data.hero.ctaSecondary = document.getElementById("h-cta2").value;
       data.hero.ctaSecondaryLink = document.getElementById("h-cta2l").value;
       data.hero.roles = document.getElementById("h-roles").value.split("\n").map(s=>s.trim()).filter(Boolean);
+      data.global.portraitTag = document.getElementById("h-portraitTag").value;
+      data.global.scrollCue = document.getElementById("h-scrollCue").value;
       saveData();
     }
 
@@ -467,6 +560,34 @@
     function saveSkills() {
       document.querySelectorAll(".a-skill").forEach(el => {
         data.about.skills[el.dataset.cat] = el.value.split(",").map(s=>s.trim()).filter(Boolean);
+      });
+      saveData();
+    }
+
+    // --- SECTION HEADERS ---
+    function renderSections() {
+      const s = data.sections;
+      const keys = ["about","projects","certs","experience","digital","education","contact"];
+      document.getElementById("sectionsFields").innerHTML = keys.map(k => {
+        const sec = s[k] || { num:"", title:"", desc:"" };
+        return `
+          <div style="margin-bottom:20px;border:1px solid var(--line);border-radius:12px;padding:18px;">
+            <h4 style="font-family:var(--head);font-size:14px;margin-bottom:12px;text-transform:uppercase;color:var(--fg-dim);letter-spacing:0.05em">${k}</h4>
+            <div class="form-row">
+              <div class="form-group"><label>Section Number</label><input class="sf-num" data-k="${k}" value="${esc(sec.num)}"></div>
+              <div class="form-group"><label>Section Title</label><input class="sf-title" data-k="${k}" value="${esc(sec.title)}"></div>
+            </div>
+            <div class="form-group"><label>Description</label><input class="sf-desc" data-k="${k}" value="${esc(sec.desc)}"></div>
+          </div>`;
+      }).join("") + `<button class="btn primary" onclick="saveSections()">Save Section Headers</button>`;
+    }
+    function saveSections() {
+      const keys = ["about","projects","certs","experience","digital","education","contact"];
+      keys.forEach(k => {
+        if (!data.sections[k]) data.sections[k] = {};
+        data.sections[k].num = document.querySelector(`.sf-num[data-k="${k}"]`).value;
+        data.sections[k].title = document.querySelector(`.sf-title[data-k="${k}"]`).value;
+        data.sections[k].desc = document.querySelector(`.sf-desc[data-k="${k}"]`).value;
       });
       saveData();
     }
