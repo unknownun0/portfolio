@@ -67,15 +67,50 @@
       .toast{position:fixed;bottom:24px;right:24px;background:var(--accent);color:#fff;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:500;z-index:300;opacity:0;transform:translateY(10px);transition:.3s}
       .toast.show{opacity:1;transform:translateY(0)}
       @media(max-width:600px){.form-row{grid-template-columns:1fr}.tabs{gap:2px}.tab{padding:7px 12px;font-size:12px}}
+
+      /* Login Screen */
+      .login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+      .login-box{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:40px 36px;width:100%;max-width:380px;text-align:center}
+      .login-box .lock-icon{width:60px;height:60px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:26px}
+      .login-box h2{font-family:var(--head);font-size:20px;font-weight:600;margin-bottom:4px}
+      .login-box .login-sub{color:var(--fg-dim);font-size:13px;margin-bottom:28px}
+      .login-box .form-group{text-align:left}
+      .login-box .btn{width:100%;justify-content:center;padding:12px;margin-top:8px}
+      .login-error{color:var(--accent);font-size:12px;margin-top:10px;display:none}
+      .login-error.show{display:block}
+      .hidden{display:none !important}
     </style>
   </head>
   <body>
+    <!-- LOGIN SCREEN -->
+    <div class="login-wrap" id="loginScreen">
+      <div class="login-box">
+        <div class="lock-icon">🔒</div>
+        <h2>Admin Login</h2>
+        <p class="login-sub">Enter your credentials to access the portfolio manager.</p>
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" id="loginUser" placeholder="Enter username" autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="loginPass" placeholder="Enter password" />
+        </div>
+        <p class="login-error" id="loginError">Invalid username or password. Try again.</p>
+        <button class="btn primary" id="loginBtn" onclick="doLogin()">Login →</button>
+        <p style="margin-top:18px;font-size:11px;color:var(--fg-faint)">Session expires in 24 hours</p>
+      </div>
+    </div>
+
+    <!-- ADMIN PANEL (hidden until logged in) -->
+    <div id="adminPanel" class="hidden">
     <header class="admin-header">
       <h1><span>Admin</span> — Portfolio Manager</h1>
       <div class="header-actions">
         <a href="index.html" class="btn">← Back to Site</a>
         <button class="btn danger" id="resetAllBtn">Reset All</button>
         <button class="btn primary" id="saveAllBtn">💾 Save All</button>
+        <button class="btn" onclick="doLogout()" style="border-color:var(--accent);color:var(--accent)">🚪 Logout</button>
       </div>
     </header>
 
@@ -156,9 +191,73 @@
     </div>
 
     <div class="toast" id="toast"></div>
+    </div><!-- /adminPanel -->
 
     <script>
     "use strict";
+
+    // ==================== AUTH ====================
+    const AUTH_KEY = "portfolio_admin_auth";
+    const AUTH_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours
+    // SHA-256 hash of "Tanginamonamanearl"
+    const VALID_USER = "admin";
+    const VALID_HASH = "7e1a7071b057c9266401fbbf1b1749ecf18211e2cb843e4f78b9d21476085e80";
+
+    async function hashPassword(pw) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(pw);
+      const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+      return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    async function doLogin() {
+      const user = document.getElementById("loginUser").value.trim();
+      const pass = document.getElementById("loginPass").value;
+      const errEl = document.getElementById("loginError");
+
+      if (!user || !pass) {
+        errEl.textContent = "Please enter both username and password.";
+        errEl.classList.add("show");
+        return;
+      }
+
+      const passHash = await hashPassword(pass);
+
+      if (user === VALID_USER && passHash === VALID_HASH) {
+        localStorage.setItem(AUTH_KEY, JSON.stringify({ user: passHash, time: Date.now() }));
+        showAdmin();
+      } else {
+        errEl.textContent = "Invalid username or password. Try again.";
+        errEl.classList.add("show");
+        document.getElementById("loginPass").value = "";
+        document.getElementById("loginPass").focus();
+      }
+    }
+
+    function checkAuth() {
+      try {
+        const auth = JSON.parse(localStorage.getItem(AUTH_KEY));
+        if (auth && auth.user && (Date.now() - auth.time < AUTH_EXPIRY)) return true;
+      } catch {}
+      return false;
+    }
+
+    function showAdmin() {
+      document.getElementById("loginScreen").classList.add("hidden");
+      document.getElementById("adminPanel").classList.remove("hidden");
+    }
+
+    function doLogout() {
+      localStorage.removeItem(AUTH_KEY);
+      location.reload();
+    }
+
+    // Enter key to login
+    document.getElementById("loginPass")?.addEventListener("keydown", e => { if (e.key === "Enter") doLogin(); });
+    document.getElementById("loginUser")?.addEventListener("keydown", e => { if (e.key === "Enter") document.getElementById("loginPass").focus(); });
+
+    // Check on load
+    if (checkAuth()) { showAdmin(); } else { document.getElementById("loginScreen").classList.remove("hidden"); }
 
     // ==================== DEFAULT DATA ====================
     const DEFAULTS = {
