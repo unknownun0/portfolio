@@ -39,9 +39,6 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
- 
-  </head>
-  <body>
     <canvas id="thread-canvas"></canvas>
     <div class="grain"></div>
 
@@ -63,19 +60,59 @@
         <li><a href="#experience">Experience</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
-      <div style="display: flex; align-items: center; gap: 14px">
+      <div class="nav-right">
         <a
-          href="Portfolio\ATS CV EARL.pdf"
+          href="ATS CV EARL.pdf"
           download
           class="nav-cta"
           id="navResume"
           >RESUME ↓</a
         >
-        <a href="mailto:earljohngomez66@gmail.com" class="nav-cta"
+        <a href="mailto:earljohngomez66@gmail.com" class="nav-cta nav-hello"
           >SAY HELLO →</a
         >
+        <button
+          class="nav-toggle"
+          id="navToggle"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+          aria-controls="navDrawer"
+        >
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </nav>
+
+    <div class="nav-overlay" id="navOverlay"></div>
+    <aside class="nav-drawer" id="navDrawer" aria-hidden="true">
+      <div class="drawer-head">
+        <span class="drawer-label">MENU</span>
+        <button class="drawer-close" id="drawerClose" aria-label="Close menu">
+          ✕
+        </button>
+      </div>
+      <ul class="drawer-links">
+        <li><a href="#top">Home</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#certs">Certs</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="drawer-foot">
+        <a
+          href="ATS CV EARL.pdf"
+          download
+          class="btn primary"
+          >Download Resume</a
+        >
+        <a
+          href="mailto:earljohngomez66@gmail.com"
+          class="btn ghost"
+          >Say Hello</a
+        >
+      </div>
+    </aside>
 
     <header class="hero" id="top">
       <div class="wrap hero-grid">
@@ -92,6 +129,10 @@
           </h1>
           <p class="hero-sub">
             Happy to work with your future projects.
+          </p>
+          <p class="type-line" aria-live="polite">
+            <span class="ai-chip">AI</span
+            ><span id="typeText"></span><span class="type-caret" aria-hidden="true"></span>
           </p>
           <div class="hero-actions">
             <a href="#work" class="btn primary">View Projects</a>
@@ -151,15 +192,15 @@
             
             <div class="stat-row">
               <div class="stat">
-                <div class="num">4+</div>
+                <div class="num" data-count="4" data-suffix="+">0</div>
                 <div class="lbl">Shipped Systems</div>
               </div>
               <div class="stat">
-                <div class="num">3</div>
+                <div class="num" data-count="3" data-suffix="">0</div>
                 <div class="lbl">Certifications</div>
               </div>
               <div class="stat">
-                <div class="num">15+</div>
+                <div class="num" data-count="15" data-suffix="+">0</div>
                 <div class="lbl">Tools &amp; Stacks</div>
               </div>
             </div>
@@ -233,140 +274,7 @@
         </div>
 
         <div class="carousel-shell" data-reveal>
-          <div class="carousel-track" id="projTrack">
-            <article class="proj-card">
-              <div class="proj-top">
-                <span class="proj-id">SYS / 01</span
-                ><span class="proj-role">Full-Stack Developer</span>
-              </div>
-              <img
-                class="proj-img"
-                src="image/heritage.png"
-                alt="Heritage Park Taguig Management System"
-              />
-              <h3>Heritage Park Taguig Management System</h3>
-              <p class="proj-desc">
-                Architected a full-stack web app to streamline park operations
-                and record management, with a responsive interface built for
-                both desktop and mobile.
-              </p>
-              <ul class="proj-points">
-                <li>
-                  Designed a responsive frontend with Tailwind CSS for optimal
-                  cross-device viewing
-                </li>
-                <li>
-                  Implemented backend logic for database management and data
-                  retrieval
-                </li>
-                <li>Built secure user interaction flows across the platform</li>
-              </ul>
-              <div class="proj-stack">
-                <span>PHP</span><span>JavaScript</span><span>MySQL</span
-                ><span>Tailwind CSS</span>
-              </div>
-            </article>
-
-            <article class="proj-card">
-              <div class="proj-top">
-                <span class="proj-id">SYS / 02</span
-                ><span class="proj-role">Full-Stack Developer</span>
-              </div>
-              <img
-                class="proj-img"
-                src="image/stdom.png"
-                alt="Student Health Record & Admin Analytics System"
-              />
-              <h3>Student Health Record &amp; Admin Analytics System</h3>
-              <p class="proj-desc">
-                An interactive analytics dashboard for medical staff and
-                administrators, built around institutional color branding and
-                dynamic metrics.
-              </p>
-              <ul class="proj-points">
-                <li>
-                  Designed the dashboard interface with Tailwind CSS and
-                  JavaScript
-                </li>
-                <li>
-                  Configured PHP/MySQL backend routes to pull dynamic metrics
-                </li>
-                <li>
-                  Integrated role-based documentation and system security access
-                </li>
-              </ul>
-              <div class="proj-stack">
-                <span>PHP</span><span>MySQL</span><span>Tailwind CSS</span
-                ><span>JavaScript</span>
-              </div>
-            </article>
-
-            <article class="proj-card">
-              <div class="proj-top">
-                <span class="proj-id">SYS / 03</span
-                ><span class="proj-role">Full-Stack Developer</span>
-              </div>
-              <img
-                class="proj-img"
-                src="image/roma.png"
-                alt="Online Booking System — ROMA Tours Corp."
-              />
-              <h3> ROMA Online Booking (Online Bus Ticket Reservation System)</h3>
-              <p class="proj-desc">
-                A web-based bus booking platform for real-time availability,
-                schedules, and driver details, with an AI layer on top for
-                customer support.
-              </p>
-              <ul class="proj-points">
-                <li>
-                  Integrated an AI chatbot for real-time schedule, fare, and
-                  bus-type queries
-                </li>
-                <li>
-                  Built a sales analytics dashboard with dynamic charts and
-                  moving averages
-                </li>
-                <li>
-                  Automated printable receipts and email notifications for
-                  approved bookings
-                </li>
-              </ul>
-              <div class="proj-stack">
-                <span>PHP</span><span>MySQL</span><span>XAMPP</span
-                ><span>AI Chatbot</span>
-              </div>
-            </article>
-
-            <article class="proj-card">
-              <div class="proj-top">
-                <span class="proj-id">SYS / 04</span
-                ><span class="proj-role">Full-Stack Developer</span>
-              </div>
-
-              <h3>Online Grading Management System — AZGH College</h3>
-              <p class="proj-desc">
-                A grading system automating grade computation across Performance
-                Tasks, Written Works, and Examinations for an entire college.
-              </p>
-              <ul class="proj-points">
-                <li>
-                  Automated grade computation and email notifications to
-                  students
-                </li>
-                <li>
-                  Designed an accessible, user-friendly frontend interface
-                </li>
-                <li>
-                  Built with maintainability for non-technical administrators in
-                  mind
-                </li>
-              </ul>
-              <div class="proj-stack">
-                <span>PHP</span><span>XAMPP</span><span>HTML5</span
-                ><span>Tailwind CSS</span>
-              </div>
-            </article>
-          </div>
+          <div class="carousel-track" id="projTrack"></div>
           <div class="carousel-controls">
             <div class="car-track-index">
               <div class="track-bar"><em id="projFill"></em></div>
@@ -418,97 +326,7 @@
         </div>
 
         <div class="carousel-shell" data-reveal>
-          <div class="carousel-track" id="certTrack">
-            <article class="cert-card">
-              <div class="cert-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4">
-                  <path
-                    d="M12 15l-5.5 3 1-6L3 8l6-.7L12 2l3 5.3L21 8l-4.5 4 1 6z"
-                  />
-                </svg>
-              </div>
-              <img
-                class="cert-img"
-                src="image/python.png"
-                alt="Python Certification Badge"  
-              />
-              <h4>Python</h4>
-              <a
-                class="cert-link"
-                href="https://freecodecamp.org/certification/fccaada7d45-00a6-4feb-a757-d51238c2ebea/python-v9"
-                target="_blank"
-                rel="noopener"
-                >View credential
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path d="M7 17L17 7M7 7h10v10" /></svg
-              ></a>
-            </article>
-
-            <article class="cert-card">
-              <div class="cert-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4">
-                  <path
-                    d="M12 15l-5.5 3 1-6L3 8l6-.7L12 2l3 5.3L21 8l-4.5 4 1 6z"
-                  />
-                </svg>
-              </div>
-               <img
-                class="cert-img"
-                src="image/rwd.png"
-                alt="Responsive Web Design Certification Badge"  
-              />
-              <h4>Responsive Web Design</h4>
-              <a
-                class="cert-link"
-                href="https://freecodecamp.org/certification/fccaada7d45-00a6-4feb-a757-d51238c2ebea/responsive-web-design-v9"
-                target="_blank"
-                rel="noopener"
-                >View credential
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path d="M7 17L17 7M7 7h10v10" /></svg
-              ></a>
-            </article>
-
-            <article class="cert-card">
-              <div class="cert-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4">
-                  <path
-                    d="M12 15l-5.5 3 1-6L3 8l6-.7L12 2l3 5.3L21 8l-4.5 4 1 6z"
-                  />
-                </svg>
-              </div>
-                            <img
-                class="cert-img"
-                src="image/java.png"
-                alt="JavaScript Certification Badge"  
-              />
-              <h4>JavaScript Algorithms &amp; Data Structures</h4>
-              <a
-                class="cert-link"
-                href="https://freecodecamp.org/certification/fccaada7d45-00a6-4feb-a757-d51238c2ebea/javascript-v9"
-                target="_blank"
-                rel="noopener"
-                >View credential
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path d="M7 17L17 7M7 7h10v10" /></svg
-              ></a>
-            </article>
-          </div>
+          <div class="carousel-track" id="certTrack"></div>
           <div class="carousel-controls">
             <div class="car-track-index">
               <div class="track-bar"><em id="certFill"></em></div>
@@ -551,12 +369,12 @@
       </div>
     </section>
 
-        <section class="pad hairline" id="experience">
+    <section class="pad hairline" id="experience">
       <div class="wrap">
         <div class="sec-head" data-reveal>
           <div>
             <span class="sec-num">04 — BACKGROUND</span>
-            <h2 class="sec-title">Experience /Seminar </h2>
+            <h2 class="sec-title">Experience &amp; Seminars</h2>
           </div>
           <p class="sec-desc">
              Experience and seminar participation.
@@ -564,78 +382,19 @@
         </div>
 
         <div class="carousel-shell" data-reveal>
-          <div class="carousel-track" id="certTrack">
-            <article class="cert-card">
-              <h4>Web Development Engineer Intern</h4>
-              <p>2026 — 2026</p>
-              <p>St. Dominic College of Asia — ICT Department</p>
-              <p>As a full-stack web developer, you built and maintained responsive user interfaces using HTML5, Tailwind CSS, JavaScript, and PHP, while seamlessly integrating APIs, managing MySQL databases, authoring comprehensive technical documentation, and performing cross-viewport debugging to optimize system performance across devices.</p>
-            </article>
-
-            <article class="cert-card">
-              <h4>Club Promoter & Host – Various Locations (Quezon City, Poblacion, Malate) </h4>
-              <p>2024 - 2025</p>
-              <p>Promoter / Host </p>
-              <p>Promoted nightlife events and hosted club nights. 
-Engaged with audiences and enhanced event turnout and customer experience. 
-Maintained active communication and promotions through social platforms. </p>
-            </article>
-
-             <article class="cert-card">
-              <h4>Bimbo’s Coffee Shop, Las Piñasn</h4>
-              <p>2026 — 2026</p>
-              <p>Barista / Graphic Designer </p>
-              <p>Started as a barista and was promoted to graphic designer. 
-Designed product promotional materials, posters, and edited videos for marketing. 
-Helped improve the brand’s visual identity and customer engagement</p>
-            </article>
-
-            <article class="cert-card">
-                <img
-                class="cert-img"
-                src="image/block.jpg"
-                alt="The BLOKC Seminar Badge"
-              />
-              <h4>The BLOKC Seminar </h4>
-              <p>April 2025</p>
-              <p>BLOCKCHAIN TECHNOLOGY </p>
-            </article>
-
-                        <article class="cert-card">
-                <img
-                class="cert-img"
-                src="image/daytona.jpg"
-                alt="Daytona Seminar Badge"
-              />
-              <h4>Daytona Seminar </h4>
-              <p>August 2024</p>
-              <p>Technical Support Staff </p>
-            </article>
-
-                        <article class="cert-card">
-                <img
-                class="cert-img"
-                src="image/github.jpg"
-                alt="GitHub Seminar Badge"
-              />
-              <h4>GitHub Seminar</h4>
-              <p>October 2025</p>
-              <p>Technical Support Staff </p>
-            </article>
-
-          </div>
+          <div class="carousel-track" id="expTrack"></div>
           <div class="carousel-controls">
             <div class="car-track-index">
-              <div class="track-bar"><em id="certFill"></em></div>
+              <div class="track-bar"><em id="expFill"></em></div>
               <span class="track-label"
-                >TRACKING <b id="certCount">01</b> / 03</span
+                >TRACKING <b id="expCount">01</b> / 06</span
               >
             </div>
             <div class="car-arrows">
               <button
                 class="car-arrow"
-                id="certPrev"
-                aria-label="Previous certificate"
+                id="expPrev"
+                aria-label="Previous experience"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -648,8 +407,64 @@ Helped improve the brand’s visual identity and customer engagement</p>
               </button>
               <button
                 class="car-arrow"
-                id="certNext"
-                aria-label="Next certificate"
+                id="expNext"
+                aria-label="Next experience"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pad hairline" id="digital">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <div>
+            <span class="sec-num">05 — DIGITAL</span>
+            <h2 class="sec-title">Digital Projects</h2>
+          </div>
+          <p class="sec-desc">
+             Video edits, graphic design, and content creation.
+          </p>
+        </div>
+
+        <div class="carousel-shell" data-reveal>
+          <div class="carousel-track" id="digTrack"></div>
+          <div class="carousel-controls">
+            <div class="car-track-index">
+              <div class="track-bar"><em id="digFill"></em></div>
+              <span class="track-label"
+                >TRACKING <b id="digCount">01</b> / 05</span
+              >
+            </div>
+            <div class="car-arrows">
+              <button
+                class="car-arrow"
+                id="digPrev"
+                aria-label="Previous digital project"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
+              </button>
+              <button
+                class="car-arrow"
+                id="digNext"
+                aria-label="Next digital project"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -670,38 +485,17 @@ Helped improve the brand’s visual identity and customer engagement</p>
       <div class="wrap">
         <div class="sec-head" data-reveal>
           <div>
-            <span class="sec-num">05 — BACKGROUND</span>
+            <span class="sec-num">06 — EDUCATION</span>
             <h2 class="sec-title">Education</h2>
           </div>
         </div>
-        <div class="edu-grid" data-reveal>
-          <div class="edu-card">
-            <span class="edu-year">2022 — 2026</span>
-            <h4>Dr. Filemon C. Aguilar Memorial College, Las Piñas</h4>
-            <p>Bachelor of Science in Information Systems (BSIS)</p>
-            <p>PSITE Head Programmer since 2023-2026</p>
-            <p>Academic achiever 2024-2025</p>
-          </div>
-          <div class="edu-card">
-            <span class="edu-year">2020 — 2022</span>
-            <h4>Zarate College</h4>
-            <p>Senior High School Graduate</p>
-            <p>ICT Top 5  Programmer Grade 11&12 </p>
-            <p>Best in Research 2021-2022</p>
-          </div>
-          <div class="edu-card">
-            <span class="edu-year">2016 — 2020</span>
-            <h4>Captain Albert Aguilar National High School</h4>
-            <p>High School Graduate</p>
-            <p>ICT top achiever since grade 8 to 10</p>
-          </div>
-        </div>
+        <div class="edu-grid" id="eduGrid" data-reveal></div>
       </div>
     </section>
 
     <section class="hairline" id="contact">
       <div class="wrap contact-inner">
-        <p class="eyebrow"><span class="dot"></span> 06 — CONTACT</p>
+        <p class="eyebrow"><span class="dot"></span> 07 — CONTACT</p>
         <h2 class="contact-title">
           <a href="mailto:earljohngomez66@gmail.com"
             >Let's build<br />something.</a
@@ -746,7 +540,7 @@ Helped improve the brand’s visual identity and customer engagement</p>
 
     <footer>
       <div class="wrap foot-row">
-        <span class="brand">EARL JOHN GOMEZ © 2026</span>
+        <span class="brand">EARL JOHN GOMEZ © <span id="year">2026</span></span>
         <span>Happy to work with your future projects</span>
       </div>
     </footer>
