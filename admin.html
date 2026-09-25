@@ -497,6 +497,8 @@
     // --- GLOBAL ---
     function renderGlobal() {
       const g = data.global;
+      const visionProvider = localStorage.getItem("vision_provider") || "openai";
+      const visionKey = localStorage.getItem("vision_api_key") || "";
       document.getElementById("globalFields").innerHTML = `
         <div class="form-group"><label>Brand / Nav Name</label><input id="g-brand" value="${esc(g.brandName)}"></div>
         <div class="form-row">
@@ -517,6 +519,19 @@
           <div class="form-group"><label>Portrait Tag</label><input id="g-portraitTag" value="${esc(g.portraitTag)}"></div>
           <div class="form-group"><label>Scroll Cue Text</label><input id="g-scrollCue" value="${esc(g.scrollCue)}"></div>
         </div>
+        <hr style="margin:24px 0;border-color:var(--line)">
+        <h4 style="font-family:var(--head);font-size:14px;margin-bottom:12px;color:var(--fg-dim)">🤖 AI Vision API (for auto-generating digital project descriptions)</h4>
+        <div class="form-row">
+          <div class="form-group"><label>Provider</label>
+            <select id="g-visionProvider" style="width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:14px">
+              <option value="openai" ${visionProvider==="openai"?"selected":""}>OpenAI (GPT-4o-mini)</option>
+              <option value="gemini" ${visionProvider==="gemini"?"selected":""}>Google Gemini (Flash)</option>
+              <option value="anthropic" ${visionProvider==="anthropic"?"selected":""}>Anthropic (Claude Haiku)</option>
+            </select>
+          </div>
+          <div class="form-group"><label>API Key</label><input id="g-visionKey" type="password" value="${esc(visionKey)}" placeholder="Enter your API key"></div>
+        </div>
+        <p style="font-size:11px;color:var(--fg-faint);margin-top:6px">Keys are stored in browser localStorage. Get keys: <a href="https://platform.openai.com/api-keys" target="_blank" style="color:var(--accent)">OpenAI</a> · <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--accent)">Gemini</a> · <a href="https://console.anthropic.com/settings/keys" target="_blank" style="color:var(--accent)">Anthropic</a></p>
         <button class="btn primary" onclick="saveGlobal()">Save Global</button>
       `;
     }
@@ -533,6 +548,8 @@
       g.adminLinkText = document.getElementById("g-adminTxt").value;
       g.portraitTag = document.getElementById("g-portraitTag").value;
       g.scrollCue = document.getElementById("g-scrollCue").value;
+      localStorage.setItem("vision_provider", document.getElementById("g-visionProvider").value);
+      localStorage.setItem("vision_api_key", document.getElementById("g-visionKey").value);
       saveData();
     }
 
@@ -734,6 +751,7 @@
 
     // Digital fields
     function digFields(d, i) {
+      const hasImg = d.img && d.img.startsWith("data:");
       return `
         <div class="item-fields">
           <div class="form-group"><label>Title</label><input class="df-title" data-i="${i}" value="${esc(d.title)}"></div>
@@ -741,7 +759,21 @@
             <div class="form-group"><label>Category</label><input class="df-org" data-i="${i}" value="${esc(d.org)}"></div>
           </div>
           <div class="form-group"><label>Description</label><textarea class="df-desc" data-i="${i}">${esc(d.desc)}</textarea></div>
-          <div class="form-group"><label>Image URL</label><input class="df-img" data-i="${i}" value="${esc(d.img)}"></div>
+          <div class="form-group">
+            <label>Image</label>
+            <div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap">
+              <div class="img-preview-wrapper" style="position:relative">
+                ${hasImg ? `<img class="img-preview big" src="${esc(d.img)}" alt="preview">` : `<div class="img-preview big" style="display:flex;align-items:center;justify-content:center;color:var(--fg-faint);font-size:12px">No image</div>`}
+                <input type="file" class="df-img-file" data-i="${i}" accept="image/*" style="display:none" onchange="handleDigImgUpload(${i}, this)">
+                ${hasImg ? `<button type="button" class="btn danger sm" onclick="removeDigImg(${i})" style="position:absolute;top:6px;right:6px;padding:4px 8px;font-size:10px">✕</button>` : ''}
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:200px">
+                <button type="button" class="btn sm" onclick="document.querySelector('.df-img-file[data-i=\\"${i}\\"]').click()">${hasImg ? 'Replace Image' : 'Upload Image'}</button>
+                <button type="button" class="btn sm" onclick="generateDigDesc(${i})" ${!hasImg ? 'disabled' : ''} title="Requires Vision API key in Global settings">🤖 Generate Description</button>
+                <input type="text" class="df-img" data-i="${i}" value="${esc(d.img)}" placeholder="Or paste image URL / base64" style="display:none">
+              </div>
+            </div>
+          </div>
           <div class="item-actions"><button class="btn primary sm" onclick="saveDig(${i})">Save</button></div>
         </div>`;
     }
@@ -752,6 +784,95 @@
       d.desc = document.querySelector(`.df-desc[data-i="${i}"]`).value;
       d.img = document.querySelector(`.df-img[data-i="${i}"]`).value;
       saveData();
+      renderListSection("digital", "digitalList", digFields);
+    }
+    function handleDigImgUpload(i, input) {
+      const file = input.files[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) { showToast("Image too large (max 2MB)"); return; }
+      const reader = new FileReader();
+      reader.onload = e => {
+        data.digital[i].img = e.target.result;
+        saveData();
+        renderListSection("digital", "digitalList", digFields);
+        showToast("Image uploaded!");
+      };
+      reader.readAsDataURL(file);
+    }
+    function removeDigImg(i) {
+      data.digital[i].img = "";
+      saveData();
+      renderListSection("digital", "digitalList", digFields);
+    }
+    async function generateDigDesc(i) {
+      const d = data.digital[i];
+      const apiKey = localStorage.getItem("vision_api_key") || "";
+      const provider = localStorage.getItem("vision_provider") || "openai";
+      if (!apiKey) { showToast("Add Vision API key in Global settings first"); return; }
+      if (!d.img || !d.img.startsWith("data:")) { showToast("Upload an image first"); return; }
+      const btn = document.querySelector(`.df-img-file[data-i="${i}"]`)?.parentElement?.querySelector("button:nth-of-type(2)");
+      if (btn) { btn.disabled = true; btn.textContent = "Generating..."; }
+      try {
+        let desc = "";
+        const base64 = d.img.split(",")[1];
+        if (provider === "openai") {
+          const res = await fetch("https://api.openai.com/v1/chat/completions", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${apiKey}` },
+            body: JSON.stringify({
+              model: "gpt-4o-mini",
+              messages: [{ role: "user", content: [
+                { type: "text", text: "Write a concise, professional 1-2 sentence description for a portfolio digital design project. Focus on what the design is, its style/purpose, and key visual elements. No markdown." },
+                { type: "image_url", image_url: { url: `data:image/jpeg;base64,${base64}` } }
+              ]}],
+              max_tokens: 120,
+              temperature: 0.4
+            })
+          });
+          const data = await res.json();
+          desc = data.choices?.[0]?.message?.content?.trim() || "";
+        } else if (provider === "gemini") {
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [{ parts: [
+                { text: "Write a concise, professional 1-2 sentence description for a portfolio digital design project. Focus on what the design is, its style/purpose, and key visual elements. No markdown." },
+                { inline_data: { mime_type: "image/jpeg", data: base64 } }
+              ]}]
+            })
+          });
+          const data = await res.json();
+          desc = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "";
+        } else if (provider === "anthropic") {
+          const res = await fetch("https://api.anthropic.com/v1/messages", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "x-api-key": apiKey, "anthropic-version": "2023-06-01" },
+            body: JSON.stringify({
+              model: "claude-3-haiku-20240307",
+              max_tokens: 120,
+              messages: [{ role: "user", content: [
+                { type: "text", text: "Write a concise, professional 1-2 sentence description for a portfolio digital design project. Focus on what the design is, its style/purpose, and key visual elements. No markdown." },
+                { type: "image", source: { type: "base64", media_type: "image/jpeg", data: base64 } }
+              ]}]
+            })
+          });
+          const data = await res.json();
+          desc = data.content?.[0]?.text?.trim() || "";
+        }
+        if (desc) {
+          const textarea = document.querySelector(`.df-desc[data-i="${i}"]`);
+          if (textarea) { textarea.value = desc; data.digital[i].desc = desc; }
+          showToast("Description generated!");
+        } else {
+          showToast("Failed to generate description");
+        }
+      } catch (err) {
+        console.error(err);
+        showToast("Error: " + err.message);
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = "🤖 Generate Description"; }
+      }
     }
 
     // Education fields
