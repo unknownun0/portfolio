@@ -430,7 +430,6 @@ function renderDigitalProjects() {
     info.append(el("h4", null, d.title || ""));
     if (d.period) info.append(el("span", "dig-period", d.period));
     if (d.org) info.append(el("span", "dig-org", d.org));
-    if (d.desc) info.append(el("p", "dig-desc", d.desc));
     card.append(info);
     grid.append(card);
   });
