@@ -337,6 +337,9 @@ function renderProjects() {
       card.append(img);
     }
     card.append(el("h3", null, p.title || ""), el("p", "proj-desc", p.desc || ""));
+    if (p.impact) {
+      card.append(el("p", "proj-impact", p.impact));
+    }
     const ul = el("ul", "proj-points");
     (p.points || []).forEach((pt) => ul.append(el("li", null, pt)));
     card.append(ul);

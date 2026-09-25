@@ -954,6 +954,17 @@ section.pad {
   color: var(--fg-dim);
   font-size: 14.5px;
 }
+.proj-impact {
+  color: var(--accent);
+  font-size: 13.5px;
+  font-weight: 500;
+  margin-top: 8px;
+  padding: 10px 14px;
+  background: rgba(255, 45, 61, 0.08);
+  border: 1px solid var(--accent-dim);
+  border-radius: 8px;
+  line-height: 1.5;
+}
 .proj-points {
   display: flex;
   flex-direction: column;
@@ -1495,6 +1506,10 @@ footer {
   }
   .proj-desc {
     font-size: 13px;
+  }
+  .proj-impact {
+    font-size: 12.5px;
+    padding: 8px 12px;
   }
   .proj-points li {
     font-size: 12.5px;

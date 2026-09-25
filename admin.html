@@ -689,6 +689,7 @@
           </div>
           <div class="form-group"><label>Title</label><input class="pf-title" data-i="${i}" value="${esc(p.title)}"></div>
           <div class="form-group"><label>Description</label><textarea class="pf-desc" data-i="${i}">${esc(p.desc)}</textarea></div>
+          <div class="form-group"><label>Impact / Result (one line, shown prominently)</label><input class="pf-impact" data-i="${i}" value="${esc(p.impact || "")}" placeholder="e.g. Reduced manual work by 80% for 50+ staff"></div>
           <div class="form-group"><label>Image URL</label><input class="pf-img" data-i="${i}" value="${esc(p.img)}"></div>
           <div class="form-group"><label>Points (one per line)</label><textarea class="pf-points" data-i="${i}" rows="3">${p.points.join("\n")}</textarea></div>
           <div class="form-group"><label>Stack (comma separated)</label><input class="pf-stack" data-i="${i}" value="${esc(p.stack.join(", "))}"></div>
@@ -701,6 +702,7 @@
       p.role = document.querySelector(`.pf-role[data-i="${i}"]`).value;
       p.title = document.querySelector(`.pf-title[data-i="${i}"]`).value;
       p.desc = document.querySelector(`.pf-desc[data-i="${i}"]`).value;
+      p.impact = document.querySelector(`.pf-impact[data-i="${i}"]`).value;
       p.img = document.querySelector(`.pf-img[data-i="${i}"]`).value;
       p.points = document.querySelector(`.pf-points[data-i="${i}"]`).value.split("\n").map(s=>s.trim()).filter(Boolean);
       p.stack = document.querySelector(`.pf-stack[data-i="${i}"]`).value.split(",").map(s=>s.trim()).filter(Boolean);
@@ -921,7 +923,7 @@
     // ==================== ADD / REMOVE ====================
     function addItem(key) {
       const templates = {
-        projects: { id:"SYS / 05", role:"Developer", img:"", alt:"", title:"New Project", desc:"Description here.", points:["Point 1"], stack:["HTML"] },
+        projects: { id:"SYS / 05", role:"Developer", img:"", alt:"", title:"New Project", desc:"Description here.", impact:"", points:["Point 1"], stack:["HTML"] },
         certs: { img:"", name:"New Certification", link:"" },
         experience: { title:"New Experience", period:"2024", org:"Organization", desc:"Description.", img:"" },
         digital: { title:"New Digital Design", org:"Category", desc:"Description.", img:"" },
