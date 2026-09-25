@@ -191,6 +191,24 @@ nav.scrolled {
   color: var(--fg);
   background: rgba(255, 255, 255, 0.04);
 }
+.nav-social {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-dim);
+  transition: 0.3s var(--ease);
+  flex-shrink: 0;
+}
+.nav-social:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(255, 45, 61, 0.1);
+  transform: translateY(-2px);
+}
 
 /* ---------- mobile hamburger ---------- */
 .nav-toggle {
@@ -469,6 +487,31 @@ nav.scrolled {
   opacity: 0;
   animation: fadeUp 0.8s var(--ease) forwards;
   animation-delay: 0.7s;
+}
+.quick-facts {
+  margin-top: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--fg-dim);
+  opacity: 0;
+  animation: fadeUp 0.8s var(--ease) forwards;
+  animation-delay: 0.9s;
+}
+.quick-facts a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.quick-facts a:hover {
+  color: var(--fg);
+}
+.quick-facts span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 @keyframes fadeUp {
   from {
@@ -1250,6 +1293,36 @@ footer {
   font-size: 12px;
 }
 
+/* ---------- contact FAB ---------- */
+.contact-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--head);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border-radius: 50px;
+  box-shadow: 0 8px 28px rgba(255, 45, 61, 0.4);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  text-decoration: none;
+}
+.contact-fab:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 36px rgba(255, 45, 61, 0.5);
+}
+.contact-fab:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 3px;
+}
+
 /* ---------- reveal ---------- */
 [data-reveal] {
   opacity: 0;
@@ -1508,6 +1581,24 @@ footer {
     font-size: 17px;
     padding: 12px 4px;
   }
+  .quick-facts {
+    gap: 12px 18px;
+    font-size: 11px;
+    justify-content: center;
+  }
+  .contact-fab {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    justify-content: center;
+    padding: 14px 20px;
+    font-size: 13px;
+    border-radius: 14px;
+  }
+  .nav-social {
+    width: 36px;
+    height: 36px;
+  }
 }
 
 /* very small screens */
@@ -1537,6 +1628,18 @@ footer {
   }
   .wrap {
     padding: 0 14px;
+  }
+  .quick-facts {
+    gap: 10px 14px;
+    font-size: 10px;
+  }
+  .contact-fab {
+    padding: 12px 16px;
+    font-size: 12px;
+  }
+  .nav-social {
+    width: 32px;
+    height: 32px;
   }
 }
 
