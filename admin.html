@@ -269,6 +269,16 @@
     localStorage.removeItem("portfolio_digital_projects");
 
     async function hashPassword(pw) {
+      // Fallback for non-secure contexts (file://, HTTP)
+      if (!crypto.subtle || !crypto.subtle.digest) {
+        // Simple hash fallback (not secure, but works for local testing)
+        let hash = 0;
+        for (let i = 0; i < pw.length; i++) {
+          hash = ((hash << 5) - hash) + pw.charCodeAt(i);
+          hash |= 0;
+        }
+        return Math.abs(hash).toString(16).padStart(8, '0') + '00000000000000000000000000000000';
+      }
       const encoder = new TextEncoder();
       const data = encoder.encode(pw);
       const hashBuffer = await crypto.subtle.digest("SHA-256", data);
@@ -286,16 +296,31 @@
         return;
       }
 
-      const passHash = await hashPassword(pass);
+      // Check if we're on a secure context (HTTPS or localhost)
+      const isSecure = location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1";
 
-      if (user === VALID_USER && passHash === VALID_HASH) {
-        localStorage.setItem(AUTH_KEY, JSON.stringify({ user: passHash, time: Date.now() }));
-        showAdmin();
+      if (isSecure) {
+        const passHash = await hashPassword(pass);
+        if (user === VALID_USER && passHash === VALID_HASH) {
+          localStorage.setItem(AUTH_KEY, JSON.stringify({ user: passHash, time: Date.now() }));
+          showAdmin();
+        } else {
+          errEl.textContent = "Invalid username or password. Try again.";
+          errEl.classList.add("show");
+          document.getElementById("loginPass").value = "";
+          document.getElementById("loginPass").focus();
+        }
       } else {
-        errEl.textContent = "Invalid username or password. Try again.";
-        errEl.classList.add("show");
-        document.getElementById("loginPass").value = "";
-        document.getElementById("loginPass").focus();
+        // Non-secure context (file://) - direct password check
+        if (user === VALID_USER && pass === "Tanginamonamanearl") {
+          localStorage.setItem(AUTH_KEY, JSON.stringify({ user: "local", time: Date.now() }));
+          showAdmin();
+        } else {
+          errEl.textContent = "Invalid username or password. Try again.";
+          errEl.classList.add("show");
+          document.getElementById("loginPass").value = "";
+          document.getElementById("loginPass").focus();
+        }
       }
     }
 
@@ -306,6 +331,8 @@
       } catch {}
       return false;
     }
+    // Debug: log context info
+    console.log("Auth context:", { protocol: location.protocol, hostname: location.hostname, secure: location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1" });
 
     function showAdmin() {
       document.getElementById("loginScreen").classList.add("hidden");
